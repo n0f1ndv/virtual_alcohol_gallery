@@ -4,7 +4,7 @@ Window::Window(int window_height, int window_length, std::string window_title)
     : m_window_height{window_height}
     , m_window_length{window_length} {
     if (!glfwInit()) {
-        std::cout << "Failed to initialize library\n";
+        std::cout << "Failed to initialize GLFW\n";
     }
 
     m_window = glfwCreateWindow(m_window_height, m_window_length, window_title.c_str(), NULL, NULL);
@@ -13,17 +13,25 @@ Window::Window(int window_height, int window_length, std::string window_title)
 
         glfwTerminate();
     }
+
+    glfwMakeContextCurrent(m_window);
+
+    if (glewInit() != GLEW_OK) {
+        std::cout << "Failed to initialize GLEW\n";
+        glfwTerminate();
+    }
 }
 
 void Window::init() {
-    
+    glClearColor(1.0f, 0.0f, 1.0f, 1.0f);
+    glEnable(GL_DEPTH_TEST);
 }
 
 void Window::loop() {
-    glfwMakeContextCurrent(m_window);
-
     while (!glfwWindowShouldClose(m_window)) {
-        glClear(GL_COLOR_BUFFER_BIT);
+        glClear(GL_COLOR_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
+
+        // Rendering here :D
 
         glfwSwapBuffers(m_window);
 
