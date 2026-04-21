@@ -1,9 +1,9 @@
 CXX = g++
-CXXFLAGS = -Iinclude -Wall -Wextra -std=c++17
+CXXFLAGS = -Iinclude -Wall -std=c++17
 LIBS = -lGL -lglfw -lGLEW
 
-HEADERS = include/window.hpp
-SOURCE = src/main.cpp src/window.cpp
+HEADERS = $(wildcard include/*.hpp)
+SOURCE = $(wildcard src/*.cpp)
 TARGET = bin/app
 
 $(TARGET): $(SOURCE) $(HEADERS)
