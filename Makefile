@@ -1,7 +1,14 @@
+CXX = g++
+CXXFLAGS = -Iinclude -Wall -Wextra -std=c++17
 LIBS = -lGL -lglfw -lGLEW
 
-# Headers = 
-SOURCE = src/main.cpp
+HEADERS = include/window.hpp
+SOURCE = src/main.cpp src/window.cpp
+TARGET = bin/app
 
-app: $(SOURCE) # $(Headers)
-	g++ -o bin/app $(SOURCE) $(LIBS)
+$(TARGET): $(SOURCE) $(HEADERS)
+	@mkdir -p bin
+	$(CXX) $(CXXFLAGS) $(SOURCE) -o $(TARGET) $(LIBS)
+
+clean:
+	rm -f $(TARGET)
