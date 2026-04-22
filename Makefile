@@ -1,6 +1,6 @@
 CXX = g++
 CXXFLAGS = -Iinclude -Wall -std=c++17
-LIBS = -lGL -lglfw -lGLEW
+LIBS = -lGL -lglfw -lGLEW -lassimp
 
 HEADERS = $(wildcard include/*.hpp)
 SOURCE = $(wildcard src/*.cpp)

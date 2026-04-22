@@ -1,5 +1,6 @@
 #include "window.hpp"
 #include "input.hpp"
+#include "model.hpp"
 
 Window::Window(int window_height, int window_length, std::string window_title)
     : m_window_height{window_height}
@@ -32,6 +33,8 @@ void Window::init() {
 }
 
 void Window::loop() {
+    Model model("models/cube.obj");
+
     while (!glfwWindowShouldClose(m_window)) {
         glClear(GL_COLOR_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
 
