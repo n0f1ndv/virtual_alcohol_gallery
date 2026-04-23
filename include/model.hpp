@@ -46,6 +46,23 @@ public:
 };
 
 class Model {
+private:
+    std::vector<Mesh> meshes;
+    std::string directory;
+    std::string name;
+    std::vector<std::string> loadedTexturePaths;
+
+    void ProcessNode(aiNode* node, const aiScene* scene);
+
+    Mesh ProcessMesh(aiMesh* mesh, const aiScene* scene);
+
+    std::vector<Texture> LoadMaterialTextures(aiMaterial* mat, aiTextureType type, 
+                                              const std::string& typeName);
+
+    unsigned int LoadTextureFromFile(const std::string& path);
+
+    bool IsTextureLoaded(const std::string& path) const;
+
 public:
     Model();
 
@@ -64,21 +81,4 @@ public:
     const std::string& GetName() const { return name; }
 
     void Clear();
-
-private:
-    std::vector<Mesh> meshes;
-    std::string directory;
-    std::string name;
-    std::vector<std::string> loadedTexturePaths;
-
-    void ProcessNode(aiNode* node, const aiScene* scene);
-
-    Mesh ProcessMesh(aiMesh* mesh, const aiScene* scene);
-
-    std::vector<Texture> LoadMaterialTextures(aiMaterial* mat, aiTextureType type, 
-                                              const std::string& typeName);
-
-    unsigned int LoadTextureFromFile(const std::string& path);
-
-    bool IsTextureLoaded(const std::string& path) const;
 };
