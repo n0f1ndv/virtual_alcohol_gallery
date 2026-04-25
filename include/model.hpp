@@ -4,8 +4,12 @@
 #include <string>
 #include <memory>
 
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
+
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
@@ -29,8 +33,6 @@ private:
     unsigned int VAO = 0;
     unsigned int VBO = 0;
     unsigned int EBO = 0;
-
-    void SetupMesh();
 
 public:
     std::vector<Vertex> vertices;
@@ -79,6 +81,4 @@ public:
     const std::string& GetDirectory() const { return directory; }
 
     const std::string& GetName() const { return name; }
-
-    void Clear();
 };
