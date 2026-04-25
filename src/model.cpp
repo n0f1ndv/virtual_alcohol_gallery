@@ -114,29 +114,21 @@ bool Model::LoadModel(const std::string& path) {
         return false;
     }
 
-    size_t lastSlash = path.find_last_of("/\\");
-    directory = (lastSlash == std::string::npos) ? "" : path.substr(0, lastSlash + 1);
-
-    size_t lastSlashForName = path.find_last_of("/\\");
-    size_t lastDot = path.find_last_of(".");
-    name = path.substr(lastSlashForName + 1, lastDot == std::string::npos ? std::string::npos : lastDot - lastSlashForName - 1);
-
-    std::cout << "Loading model: " << name << std::endl;
-    std::cout << "Model directory: " << directory << std::endl;
+    std::cout << "Loading model: " << path << "\n";
 
     ProcessNode(scene->mRootNode, scene);
 
-    std::cout << "Model loaded successfully. Meshes: " << meshes.size() << std::endl;
+    std::cout << "Model loaded successfully. Meshes: " << meshes.size() << "\n";
     return true;
 }
 
 void Model::ProcessNode(aiNode* node, const aiScene* scene) {
-    for (unsigned int i = 0; i < node->mNumMeshes; ++i) {
+    for (unsigned int i = 0; i < node->mNumMeshes; i++) {
         aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
         meshes.push_back(ProcessMesh(mesh, scene));
     }
 
-    for (unsigned int i = 0; i < node->mNumChildren; ++i) {
+    for (unsigned int i = 0; i < node->mNumChildren; i++) {
         ProcessNode(node->mChildren[i], scene);
     }
 }
@@ -146,7 +138,6 @@ Mesh Model::ProcessMesh(aiMesh* mesh, const aiScene* scene) {
     std::vector<unsigned int> indices;
     std::vector<Texture> textures;
 
-    // Process vertices
     for (unsigned int i = 0; i < mesh->mNumVertices; ++i) {
         Vertex vertex;
 

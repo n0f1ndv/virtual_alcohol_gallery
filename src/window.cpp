@@ -33,10 +33,14 @@ void Window::init() {
 }
 
 void Window::loop() {
+    Model cube;
+    cube.LoadModel("models/cube.obj");
+
     while (!glfwWindowShouldClose(m_window)) {
         glClear(GL_COLOR_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
 
         // Rendering here :D
+
 
         glfwSwapBuffers(m_window);
 
