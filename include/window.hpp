@@ -12,13 +12,15 @@
 
 class Window {
     private:
-        int m_window_height;
-        int m_window_length;
-        GLFWwindow* m_window;
+        float windowHeight;
+        float windowLength;
+        GLFWwindow* window;
 
     public:
-        Window(int window_height, int window_length, std::string window_title);
+        Window(float windowHeight, float windowLength, std::string windowTitle);
         ~Window();
 
         void Loop();
 };
+
+void errorCallback(int error, const char* description);
