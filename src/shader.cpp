@@ -1,5 +1,8 @@
 #include "shader.hpp"
 
+// TODO:
+// * Review this code (TOP PRIORITY)
+
 Shader::Shader(std::string fragment_shader_path, std::string vertex_shader_path) {
     // Reading files should have its own function imo
     std::string fragment_shader_code;

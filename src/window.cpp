@@ -41,7 +41,7 @@ Window::~Window() {
 
 void Window::Loop() {
     Model cube;
-    cube.Load("models/cube.obj");
+    cube.Load("models/cone.obj");
 
     Shader shader = Shader("shaders/fragmentModel.glsl", "shaders/vertexModel.glsl");
 

@@ -1,5 +1,8 @@
 #version 330 core
 
+// TODO:
+// * Review this code (TOP PRIORITY)
+
 in vec3 vNormal;
 in vec2 vTex;
 in vec3 vWorldPos;

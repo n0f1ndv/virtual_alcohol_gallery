@@ -1,5 +1,8 @@
 #pragma once
 
+// TODO:
+// * Review this code (TOP PRIORITY)
+
 #include <GL/glew.h>
 #include <string>
 #include <vector>
