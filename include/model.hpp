@@ -1,82 +1,59 @@
 #pragma once
 
-#include <vector>
-#include <string>
-#include <memory>
-
 #include <GL/glew.h>
-#include <GLFW/glfw3.h>
-
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-
-#include <assimp/Importer.hpp>
-#include <assimp/scene.h>
-#include <assimp/postprocess.h>
+#include <string>
+#include <vector>
 
 struct Vertex {
-    glm::vec3 position;
-    glm::vec3 normal;
-    glm::vec2 texCoords;
-    glm::vec3 tangent;
-    glm::vec3 bitangent;
-};
-
-struct Texture {
-    unsigned int id;
-    std::string type;
-    std::string path;
+    float Position[3];
+    float Normal[3];
+    float TexCoords[2];
 };
 
 class Mesh {
-private:
-    unsigned int VAO = 0;
-    unsigned int VBO = 0;
-    unsigned int EBO = 0;
-
 public:
     std::vector<Vertex> vertices;
     std::vector<unsigned int> indices;
-    std::vector<Texture> textures;
+    GLuint texture; // 0 if none
 
-    Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::vector<Texture> textures);
-
-    void Draw(unsigned int shaderProgram) const;
-
+    Mesh();
     ~Mesh();
+
+    // --- Prevent copying ---
+    Mesh(const Mesh&) = delete;
+    Mesh& operator=(const Mesh&) = delete;
+
+    // --- Enable moving ---
+    Mesh(Mesh&& other) noexcept;
+    Mesh& operator=(Mesh&& other) noexcept;
+
+    // prepare GL buffers (creates VAO/VBO/EBO)
+    void Setup();
+    // draw mesh with given shader program (expects sampler uTexture)
+    void Draw(GLuint program);
+    // free GL resources
+    void Dispose();
+
+private:
+    GLuint VAO, VBO, EBO;
 };
 
 class Model {
+public:
+    Model();
+    ~Model();
+
+    // Load an OBJ (Assimp) from path (relative textures expected)
+    void Load(const std::string& path);
+
+    // Draw all meshes using program
+    void Draw(GLuint program);
+
 private:
     std::vector<Mesh> meshes;
     std::string directory;
-    std::string name;
-    std::vector<std::string> loadedTexturePaths;
 
-    void ProcessNode(aiNode* node, const aiScene* scene);
-
-    Mesh ProcessMesh(aiMesh* mesh, const aiScene* scene);
-
-    std::vector<Texture> LoadMaterialTextures(aiMaterial* mat, aiTextureType type, const std::string& typeName);
-
-    unsigned int LoadTextureFromFile(const std::string& path);
-
-    bool IsTextureLoaded(const std::string& path) const;
-
-public:
-    Model();
-
-    ~Model();
-
-    bool LoadModel(const std::string& path);
-
-    void Draw(unsigned int shaderProgram) const;
-
-    size_t GetMeshCount() const { return meshes.size(); }
-
-    const Mesh* GetMesh(size_t index) const;
-
-    const std::string& GetDirectory() const { return directory; }
-
-    const std::string& GetName() const { return name; }
+    // internal
+    void ProcessNode(struct aiNode* node, const struct aiScene* scene);
+    Mesh ProcessMesh(struct aiMesh* mesh, const struct aiScene* scene);
 };

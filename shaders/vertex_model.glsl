@@ -1,15 +1,20 @@
-#version 330
+#version 330 core
+layout(location=0) in vec3 aPos;
+layout(location=1) in vec3 aNormal;
+layout(location=2) in vec2 aTex;
 
-uniform mat4 P;
-uniform mat4 V;
 uniform mat4 M;
+uniform mat4 V;
+uniform mat4 P;
 
-layout (location=0) in vec4 vertex;
-layout (location=3) in vec4 color;
+out vec3 vNormal;
+out vec2 vTex;
+out vec3 vWorldPos;
 
-out vec4 ver_color;
-
-void main(void) {
-    ver_color = color;
-    gl_Position = P * V * M * vertex;
+void main() {
+    vec4 world = M * vec4(aPos, 1.0);
+    vWorldPos = world.xyz;
+    vNormal = mat3(transpose(inverse(M))) * aNormal;
+    vTex = aTex;
+    gl_Position = P * V * world;
 }
