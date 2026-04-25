@@ -1,15 +1,15 @@
 #include "model.hpp"
-#include <iostream>
-#include <algorithm>
+
 #include "lodepng.h"
 
-// ============================================================================
-// Mesh Implementation
-// ============================================================================
+#include <iostream>
+#include <algorithm>
 
 Mesh::Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, 
            std::vector<Texture> textures)
-    : vertices(vertices), indices(indices), textures(textures) {
+    : vertices(vertices)
+    , indices(indices)
+    , textures(textures) {
     glGenVertexArrays(1, &VAO);
     glGenBuffers(1, &VBO);
     glGenBuffers(1, &EBO);
@@ -17,12 +17,10 @@ Mesh::Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices,
     glBindVertexArray(VAO);
 
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), 
-                 &vertices[0], GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), &vertices[0], GL_STATIC_DRAW);
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), 
-                 &indices[0], GL_STATIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), &indices[0], GL_STATIC_DRAW);
 
     // Position attribute (location = 0)
     glEnableVertexAttribArray(0);
@@ -30,25 +28,21 @@ Mesh::Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices,
 
     // Normal attribute (location = 1)
     glEnableVertexAttribArray(1);
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), 
-                          (void*)offsetof(Vertex, normal));
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, normal));
 
     // Texture coordinates attribute (location = 2)
     glEnableVertexAttribArray(2);
-    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), 
-                          (void*)offsetof(Vertex, texCoords));
+    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, texCoords));
 
     // Tangent attribute (location = 3)
     glEnableVertexAttribArray(3);
-    glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), 
-                          (void*)offsetof(Vertex, tangent));
+    glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, tangent));
 
     // Bitangent attribute (location = 4)
     glEnableVertexAttribArray(4);
-    glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), 
-                          (void*)offsetof(Vertex, bitangent));
+    glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, bitangent));
 
-    glBindVertexArray(0);   
+    glBindVertexArray(0);
 }
 
 Mesh::~Mesh() {
@@ -88,16 +82,13 @@ void Mesh::Draw(unsigned int shaderProgram) const {
     glActiveTexture(GL_TEXTURE0);
 
     glBindVertexArray(VAO);
-    glDrawElements(GL_TRIANGLES, static_cast<unsigned int>(indices.size()), 
-                   GL_UNSIGNED_INT, 0);
+    glDrawElements(GL_TRIANGLES, static_cast<unsigned int>(indices.size()), GL_UNSIGNED_INT, 0);
     glBindVertexArray(0);
 }
 
-// ============================================================================
-// Model Implementation
-// ============================================================================
-
-Model::Model() : directory(""), name("") {}
+Model::Model() 
+    : directory("")
+    , name("") {}
 
 Model::~Model() {
     meshes.clear();
@@ -128,9 +119,7 @@ bool Model::LoadModel(const std::string& path) {
 
     size_t lastSlashForName = path.find_last_of("/\\");
     size_t lastDot = path.find_last_of(".");
-    name = path.substr(lastSlashForName + 1, 
-                       lastDot == std::string::npos ? 
-                       std::string::npos : lastDot - lastSlashForName - 1);
+    name = path.substr(lastSlashForName + 1, lastDot == std::string::npos ? std::string::npos : lastDot - lastSlashForName - 1);
 
     std::cout << "Loading model: " << name << std::endl;
     std::cout << "Model directory: " << directory << std::endl;
