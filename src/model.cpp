@@ -122,6 +122,12 @@ bool Model::LoadModel(const std::string& path) {
     return true;
 }
 
+void Model::Draw(unsigned int shaderProgram) const {
+    for (const auto& mesh: meshes) {
+        mesh.Draw(shaderProgram);
+    }
+}
+
 void Model::ProcessNode(aiNode* node, const aiScene* scene) {
     for (unsigned int i = 0; i < node->mNumMeshes; i++) {
         aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];

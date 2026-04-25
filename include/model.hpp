@@ -57,8 +57,7 @@ private:
 
     Mesh ProcessMesh(aiMesh* mesh, const aiScene* scene);
 
-    std::vector<Texture> LoadMaterialTextures(aiMaterial* mat, aiTextureType type, 
-                                              const std::string& typeName);
+    std::vector<Texture> LoadMaterialTextures(aiMaterial* mat, aiTextureType type, const std::string& typeName);
 
     unsigned int LoadTextureFromFile(const std::string& path);
 

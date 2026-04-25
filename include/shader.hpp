@@ -9,10 +9,12 @@
 #include <sstream>
 
 class Shader {
-    public:
-        unsigned program_id;
+    private:
+        unsigned int program_id;
 
+    public:
         Shader(std::string fragment_shader_path, std::string vertex_shader_path);
 
-        void use();
+        void Use();
+        unsigned int GetProgramID();
 };
