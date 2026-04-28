@@ -17,7 +17,8 @@ private:
     float lastX = 640.0f;
     float lastY = 360.0f; 
     bool firstMouse = true;
-    
+
+    float speed = 8;
 
 public:
     glm::vec3 position;
@@ -26,6 +27,10 @@ public:
 
     Camera(GLFWwindow* window, glm::vec3 position);
     ~Camera();
+
+    //zmienne do ruchu
+    float speed_y = 0.0f;
+    float speed_z = 0.0f;
 
     static void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
     static void cursorPositionCallback(GLFWwindow* window, double xpos, double ypos);

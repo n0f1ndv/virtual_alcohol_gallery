@@ -38,6 +38,48 @@ void Camera::handleKey(int key, int scancode, int action, int mods) {
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
         glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
     }
+
+    //do usunięcia potem
+
+    // if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
+    //     speed_z = speed
+    // }
+    // if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
+    //     speed_z = -speed
+    // }
+    // if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
+    //     speed_y = speed
+    // }
+    // if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
+    //     speed_y = -speed
+    // }
+    // if (glfwGetKey(window, GLFW_KEY_W) == GLFW_RELEASE) {
+    //     speed_z = speed
+    // }
+    // if (glfwGetKey(window, GLFW_KEY_S) == GLFW_RELEASE) {
+    //     speed_z = -speed
+    // }
+    // if (glfwGetKey(window, GLFW_KEY_D) == GLFW_RELEASE) {
+    //     speed_y = speed
+    // }
+    // if (glfwGetKey(window, GLFW_KEY_A) == GLFW_RELEASE) {
+    //     speed_y = -speed
+    // }
+
+    if (action == GLFW_PRESS) {
+		if (key == GLFW_KEY_A) speed_y = speed;
+		if (key == GLFW_KEY_D) speed_y = -speed;
+		if (key == GLFW_KEY_W) speed_z = speed;
+		if (key == GLFW_KEY_S) speed_z = -speed;
+	}
+	if (action == GLFW_RELEASE) {
+		if (key == GLFW_KEY_A) speed_y = 0;
+		if (key == GLFW_KEY_D) speed_y = 0;	
+
+		if (key == GLFW_KEY_W) speed_z = 0;
+		if (key == GLFW_KEY_S) speed_z = 0;
+		
+	}
 }
 
 void Camera::handleMouse(double xpos, double ypos) {

@@ -40,8 +40,9 @@ Window::~Window() {
     glfwTerminate();
 }
 
-void Window::Loop() {
+void Window::Loop() { 
     Camera camera(window, glm::vec3(0.0f, 0.0f, -10.0f));
+
 
     Shader shader = Shader("shaders/fragmentModel.glsl", "shaders/vertexModel.glsl");
     glfwSetCursorPos(window, 1280.0f / 2, 720.0f / 2);
@@ -54,10 +55,19 @@ void Window::Loop() {
 
     float var;
     while (!glfwWindowShouldClose(window)) {
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); 
+            // Krok A: Spłaszczamy wektor przodu (usuwamy oś Y), żebyś nie odleciał w kosmos, patrząc w niebo
+            glm::vec3 flatFront = glm::normalize(glm::vec3(camera.front.x, 0.0f, camera.front.z));
+            
+            glm::vec3 right = glm::normalize(glm::cross(flatFront, glm::vec3(0.0f, 1.0f, 0.0f)));
 
-        // TODO:
-        // * Add constant framerate (e.g. 60fps)
+            // Krok C: Składamy Twój ostateczny wektor ruchu (velocity).
+            // Tłumaczenie znaków: 
+            // Dla przodu/tyłu: dodajemy 'flatFront' pomnożony przez Twoje speed_z
+            // Dla boków: u Ciebie A to 'speed' (dodatnie), więc ODEJMUJEMY 'right', aby pójść w lewo!
+            glm::vec3 velocity = (flatFront * camera.speed_z) - (right * camera.speed_y);
+            camera.position += velocity * (float)glfwGetTime(); 
+
         var += M_PI * glfwGetTime();
         glfwSetTime(0);
 
