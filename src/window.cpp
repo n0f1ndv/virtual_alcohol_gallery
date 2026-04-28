@@ -21,7 +21,6 @@ Window::Window(float windowLength, float windowHeight, std::string windowTitle)
 
         glfwTerminate();
     }
-
     glfwMakeContextCurrent(window);
 
     if (glewInit() != GLEW_OK) {
@@ -31,6 +30,8 @@ Window::Window(float windowLength, float windowHeight, std::string windowTitle)
 
     glClearColor(1.000f, 0.780f, 0.918f, 1.0f);
     glEnable(GL_DEPTH_TEST);
+
+    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
     glfwSetErrorCallback(errorCallback);
 }
@@ -43,9 +44,13 @@ void Window::Loop() {
     Camera camera(window, glm::vec3(0.0f, 0.0f, -10.0f));
 
     Shader shader = Shader("shaders/fragmentModel.glsl", "shaders/vertexModel.glsl");
-
+    glfwSetCursorPos(window, 1280.0f / 2, 720.0f / 2);
     Model cube;
     cube.Load("models/Suzzie.obj");
+
+    //do podłogi
+    Model floor;
+    floor.Load("models/cube.obj");
 
     float var;
     while (!glfwWindowShouldClose(window)) {
@@ -53,7 +58,6 @@ void Window::Loop() {
 
         // TODO:
         // * Add constant framerate (e.g. 60fps)
-
         var += M_PI * glfwGetTime();
         glfwSetTime(0);
 
@@ -66,7 +70,8 @@ void Window::Loop() {
         glm::vec3 lightPosition = glm::vec3(2.0f, 2.0f, -4.0f);
 
         glm::mat4 P = glm::perspective(glm::radians(50.0f), windowLength / windowHeight, 1.0f, 50.0f);
-        glm::mat4 V = glm::lookAt(camera.position, glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+        // glm::mat4 V = glm::lookAt(camera.position, glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+        glm::mat4 V = glm::lookAt(camera.position, camera.position + camera.front, glm::vec3(0.0f, 1.0f, 0.0f));
         glm::mat4 M = glm::mat4(1.0f);
 
         M = glm::scale(M, glm::vec3(std::sin(var), std::sin(var), std::sin(var)));
@@ -84,6 +89,19 @@ void Window::Loop() {
         glUniform3fv(glGetUniformLocation(shader.GetProgramID(), "uColor"), 1, glm::value_ptr(modelColor));
 
         cube.Draw(shader.GetProgramID());
+
+        //szybka podłowa w clankerze do wyrzucenia potem
+
+        // --- 2. RYSOWANIE PODŁOGI (Ten sam model, inna macierz) ---
+        glm::mat4 M_floor = glm::mat4(1.0f);
+        // Przesuwamy sześcian o 3 jednostki w dół (pod nogi)
+        M_floor = glm::translate(M_floor, glm::vec3(0.0f, -3.0f, 0.0f));
+        // Spłaszczamy go w osi Y (0.1f) i potężnie rozciągamy na boki (20.0f)
+        M_floor = glm::scale(M_floor, glm::vec3(20.0f, 0.1f, 20.0f)); 
+        
+        // Wysyłamy nową macierz do karty graficznej
+        glUniformMatrix4fv(glGetUniformLocation(shader.GetProgramID(), "M"), 1, false, glm::value_ptr(M_floor));
+        floor.Draw(shader.GetProgramID()); // Rysujemy ten sam sześcian jako płaską podłogę
 
         glfwSwapBuffers(window);
 
