@@ -57,7 +57,9 @@ void Window::Loop() {
     while (!glfwWindowShouldClose(window)) {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); 
 
-        glm::vec3 flatFront = glm::normalize(glm::vec3(camera.front.x, 0.0f, camera.front.z));
+        glm::vec3 flatFront;
+        if (camera.fly) {flatFront = glm::normalize(glm::vec3(camera.front.x, 0.0f, camera.front.z));}
+        else {flatFront = glm::normalize(glm::vec3(camera.front.x, camera.front.y, camera.front.z));}
         glm::vec3 right = glm::normalize(glm::cross(flatFront, glm::vec3(0.0f, 1.0f, 0.0f)));
         glm::vec3 velocity = (flatFront * camera.speed_z) - (right * camera.speed_y);
         camera.position += velocity * (float)glfwGetTime(); 

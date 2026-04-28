@@ -38,6 +38,10 @@ void Camera::handleKey(int key, int scancode, int action, int mods) {
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
         glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
     }
+    if (glfwGetKey(window, GLFW_KEY_U) == GLFW_PRESS) {
+        if(fly) fly = false;
+        else fly = true;
+     }
 
     //do usunięcia potem
 
