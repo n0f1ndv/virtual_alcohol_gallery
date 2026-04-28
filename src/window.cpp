@@ -3,6 +3,8 @@
 #include "model.hpp"
 #include "shader.hpp"
 
+#include <cmath>
+
 // TODO:
 // * Clean up includes
 
@@ -45,24 +47,34 @@ void Window::Loop() {
 
     Shader shader = Shader("shaders/fragmentModel.glsl", "shaders/vertexModel.glsl");
 
+    float var;
     while (!glfwWindowShouldClose(window)) {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+        // TODO:
+        // * Add constant framerate (e.g. 60fps)
+
+        var += M_PI * glfwGetTime();
+        glfwSetTime(0);
 
         // Drawing goes here :D
         // TODO:
         // * Move drawing into its own function (or create class that manages scenes) (TOP PRIOTITY)
         // * Add camera
-        glm::vec3 cameraPosition = glm::vec3(0.0f, 10.0f, -10.0f);
+        glm::vec3 cameraPosition = glm::vec3(0.0f, 0.0f, -10.0f);
         glm::vec3 modelColor = glm::vec3(0.792f, 0.929f, 1.000f);
-        glm::vec3 lightPosition = glm::vec3(2.0f, 4.0f, 2.0f);
+        glm::vec3 lightPosition = glm::vec3(2.0f, 2.0f, -4.0f);
 
         glm::mat4 P = glm::perspective(glm::radians(50.0f), windowLength / windowHeight, 1.0f, 50.0f);
         glm::mat4 V = glm::lookAt(cameraPosition, glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
         glm::mat4 M = glm::mat4(1.0f);
+
+        M = glm::scale(M, glm::vec3(std::sin(var), std::sin(var), std::sin(var)));
+        M = glm::rotate(M, glm::radians(20 * var), glm::vec3(1.0f, 1.0f, 0.0f));
     
         shader.Use();
         // TODO:
-        // Create helper functions to setting uniform values (It's completely optional ;*)
+        // * Create helper functions to setting uniform values (It's completely optional ;*)
         glUniformMatrix4fv(glGetUniformLocation(shader.GetProgramID(), "P"), 1, false, glm::value_ptr(P));
         glUniformMatrix4fv(glGetUniformLocation(shader.GetProgramID(), "V"), 1, false, glm::value_ptr(V));
         glUniformMatrix4fv(glGetUniformLocation(shader.GetProgramID(), "M"), 1, false, glm::value_ptr(M));
