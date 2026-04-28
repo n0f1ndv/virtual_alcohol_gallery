@@ -3,7 +3,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-void DrawEntity(Shader& shader, Model& model, glm::vec3 position, glm::vec3 rotation, glm::vec3 scale) {
+void DrawEntity(Shader& shader, Model& model, glm::vec3 position, glm::vec3 rotation, glm::vec3 scale, glm::vec3 color) {
     
     // Tworzenie macierzy modelu (M)
     glm::mat4 M = glm::mat4(1.0f);
@@ -21,6 +21,8 @@ void DrawEntity(Shader& shader, Model& model, glm::vec3 position, glm::vec3 rota
     // Wysyłanie danych do karty graficznej
     shader.Use();
     glUniformMatrix4fv(glGetUniformLocation(shader.GetProgramID(), "M"), 1, GL_FALSE, glm::value_ptr(M));
+
+    glUniform3fv(glGetUniformLocation(shader.GetProgramID(), "uColor"), 1, glm::value_ptr(color));
 
     // Wywołanie rysowania na przekazanym obiekcie
     model.Draw(shader.GetProgramID());

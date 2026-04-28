@@ -54,6 +54,8 @@ void Window::Loop() {
     Model floor;
     floor.Load("models/cube.obj");
 
+    Model wine;
+    wine.Load("models/wine.obj");
 
     float var;
     while (!glfwWindowShouldClose(window)) {
@@ -105,11 +107,29 @@ void Window::Loop() {
             glm::vec3(0.0f), //rotation
             glm::vec3(20.0f, 0.1f, 20.0f)); //scale
 
-        //test
         DrawEntity(shader, cube, 
-            glm::vec3(0.0f, 1.0f, 0.0f),
+            glm::vec3(4.0f, -1.5f, 2.0f),
             glm::vec3(0.0f),
-            glm::vec3(2.0f, 2.0f, 2.0f));
+            glm::vec3(0.5f, 1.25f, 0.5f),
+            glm::vec3(0.8f,0.7f,0.4f));
+
+        DrawEntity(shader, wine,
+            glm::vec3(4.0f, -0.25f, 2.0f),
+            glm::vec3(-90.0f, 0.0f, 0.0f),
+            glm::vec3(0.06f, 0.06f, 0.06f),
+            glm::vec3(0.0f,0.5f,0.5f));
+
+        DrawEntity(shader, cube, 
+            glm::vec3(4.0f, -1.5f, -2.0f),
+            glm::vec3(0.0f),
+            glm::vec3(0.5f, 1.25f, 0.5f),
+            glm::vec3(0.2f,0.2f,0.2f));
+
+        DrawEntity(shader, wine,
+            glm::vec3(4.0f, -0.25f, -2.0f),
+            glm::vec3(-90.0f, 0.0f, 0.0f),
+            glm::vec3(0.06f, 0.06f, 0.06f),
+            glm::vec3(1.0f,0.0f,0.0f));
 
         glfwSwapBuffers(window);
 
