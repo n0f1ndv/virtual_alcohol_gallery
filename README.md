@@ -15,10 +15,13 @@ This project has following dependencies:
 
 ---
 
-To compile this project you need to install the following dependencies:
-**Arch Linux**
+To compile this project you need to install the following dependencies: \
+ - Arch Linux
 ```bash
-yay -S glfw, glew, glm, assimp
+yay -S glfw glew glm assimp
+```
+ - Debian
+```bash
 ```
 **TODO:
 Add  dependencies installation for Debian, Fedora etc.**
@@ -40,6 +43,6 @@ Run the executables with:
 ./bin/run
 ```
 
-Controls:
+Controls: \
 **TODO:
 Add controls**
