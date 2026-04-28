@@ -27,7 +27,7 @@ Window::Window(float windowLength, float windowHeight, std::string windowTitle)
         glfwTerminate();
     }
 
-    glClearColor(1.0f, 0.0f, 1.0f, 1.0f);
+    glClearColor(1.000f, 0.780f, 0.918f, 1.0f);
     glEnable(GL_DEPTH_TEST);
 
     glfwSetKeyCallback(window, keyCallback);
@@ -41,7 +41,7 @@ Window::~Window() {
 
 void Window::Loop() {
     Model cube;
-    cube.Load("models/cone.obj");
+    cube.Load("models/Suzzie.obj");
 
     Shader shader = Shader("shaders/fragmentModel.glsl", "shaders/vertexModel.glsl");
 
@@ -52,8 +52,8 @@ void Window::Loop() {
         // TODO:
         // * Move drawing into its own function (or create class that manages scenes) (TOP PRIOTITY)
         // * Add camera
-        glm::vec3 cameraPosition = glm::vec3(0.0f, 5.0f, -10.0f);
-        glm::vec3 modelColor = glm::vec3(0.0f, 1.0f, 1.0f);
+        glm::vec3 cameraPosition = glm::vec3(0.0f, 10.0f, -10.0f);
+        glm::vec3 modelColor = glm::vec3(0.792f, 0.929f, 1.000f);
         glm::vec3 lightPosition = glm::vec3(2.0f, 4.0f, 2.0f);
 
         glm::mat4 P = glm::perspective(glm::radians(50.0f), windowLength / windowHeight, 1.0f, 50.0f);
