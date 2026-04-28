@@ -2,6 +2,7 @@
 #include "camera.hpp"
 #include "model.hpp"
 #include "shader.hpp"
+#include "renderer.hpp"
 
 #include <cmath>
 
@@ -47,11 +48,12 @@ void Window::Loop() {
     Shader shader = Shader("shaders/fragmentModel.glsl", "shaders/vertexModel.glsl");
     glfwSetCursorPos(window, 1280.0f / 2, 720.0f / 2);
     Model cube;
-    cube.Load("models/Suzzie.obj");
+    cube.Load("models/cube.obj");
 
     //do podłogi
     Model floor;
     floor.Load("models/cube.obj");
+
 
     float var;
     while (!glfwWindowShouldClose(window)) {
@@ -80,7 +82,7 @@ void Window::Loop() {
         glm::mat4 V = glm::lookAt(camera.position, camera.position + camera.front, glm::vec3(0.0f, 1.0f, 0.0f));
         glm::mat4 M = glm::mat4(1.0f);
 
-        M = glm::scale(M, glm::vec3(std::sin(var), std::sin(var), std::sin(var)));
+        M = glm::scale(M, glm::vec3(0.001f,0.001f,0.001f));
         M = glm::rotate(M, glm::radians(20 * var), glm::vec3(1.0f, 1.0f, 0.0f));
     
         shader.Use();
@@ -98,16 +100,16 @@ void Window::Loop() {
 
         //szybka podłowa w clankerze do wyrzucenia potem
 
-        // --- 2. RYSOWANIE PODŁOGI (Ten sam model, inna macierz) ---
-        glm::mat4 M_floor = glm::mat4(1.0f);
-        // Przesuwamy sześcian o 3 jednostki w dół (pod nogi)
-        M_floor = glm::translate(M_floor, glm::vec3(0.0f, -3.0f, 0.0f));
-        // Spłaszczamy go w osi Y (0.1f) i potężnie rozciągamy na boki (20.0f)
-        M_floor = glm::scale(M_floor, glm::vec3(20.0f, 0.1f, 20.0f)); 
-        
-        // Wysyłamy nową macierz do karty graficznej
-        glUniformMatrix4fv(glGetUniformLocation(shader.GetProgramID(), "M"), 1, false, glm::value_ptr(M_floor));
-        floor.Draw(shader.GetProgramID()); // Rysujemy ten sam sześcian jako płaską podłogę
+        DrawEntity(shader, floor, 
+            glm::vec3(0.0f, -3.0f, 0.0f), //position
+            glm::vec3(0.0f), //rotation
+            glm::vec3(20.0f, 0.1f, 20.0f)); //scale
+
+        //test
+        DrawEntity(shader, cube, 
+            glm::vec3(0.0f, 1.0f, 0.0f),
+            glm::vec3(0.0f),
+            glm::vec3(2.0f, 2.0f, 2.0f));
 
         glfwSwapBuffers(window);
 
