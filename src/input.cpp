@@ -1,6 +1,6 @@
 #include "input.hpp"
 
-void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod) {
+void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mod) {
     if (action == GLFW_PRESS) {
         std::cout << "I'm pressed ~0~\n";
     }
@@ -10,6 +10,6 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
     }
 }
 
-void cursor_position_callback(GLFWwindow* window, double xpos, double ypos) {
+void cursorPositionCallback(GLFWwindow* window, double xpos, double ypos) {
     std::cout << xpos << ", " << ypos << "\n";
 }
