@@ -4,12 +4,12 @@
 
 class Shader {
     private:
-        unsigned int program_id;
+        unsigned int program;
 
         std::string ReadFile(std::string path);
 
     public:
-        Shader(std::string fragment_shader_path, std::string vertex_shader_path);
+        Shader(std::string fragmentShaderPath, std::string vertexShaderPath);
 
         void Use();
         unsigned int GetProgramID();

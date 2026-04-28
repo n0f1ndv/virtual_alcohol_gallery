@@ -7,46 +7,47 @@
 #include <fstream>
 #include <sstream>
 
-Shader::Shader(std::string fragment_shader_path, std::string vertex_shader_path) {
-    std::string code = ReadFile(vertex_shader_path);
+Shader::Shader(std::string fragmentShaderPath, std::string vertexShaderPath) {
+    std::string code = ReadFile(vertexShaderPath);
 
     int success;
-    char info_log[512];
+    char infoLog[512];
 
     // Vertex Shader compilation
     unsigned int vertex = glCreateShader(GL_VERTEX_SHADER);
-    const char* v_code = code.c_str();
-    glShaderSource(vertex, 1, &v_code, NULL);
+    const char* cCode = code.c_str();
+    glShaderSource(vertex, 1, &cCode, NULL);
     glCompileShader(vertex);
 
     glGetShaderiv(vertex, GL_COMPILE_STATUS, &success);
     if (!success) {
-        glGetShaderInfoLog(vertex, 512, NULL, info_log);
+        glGetShaderInfoLog(vertex, 512, NULL, infoLog);
         std::cout << "Error occured while compiling vertex shader\n";
     }
 
     // Fragment Shader compilation
-    code = ReadFile(fragment_shader_path);
+    code = ReadFile(fragmentShaderPath);
 
     unsigned int fragment = glCreateShader(GL_FRAGMENT_SHADER);
-    const char* f_code = code.c_str();
-    glShaderSource(fragment, 1 , &f_code, NULL);
+    cCode = code.c_str();
+    glShaderSource(fragment, 1 , &cCode, NULL);
     glCompileShader(fragment);
 
     glGetShaderiv(fragment, GL_COMPILE_STATUS, &success);
     if (!success) {
-        glGetShaderInfoLog(fragment, 512, NULL, info_log);
+        glGetShaderInfoLog(fragment, 512, NULL, infoLog);
         std::cout << "Error occured while compiling fragment shader\n";
     }
 
-    program_id = glCreateProgram();
-    glAttachShader(program_id, vertex);
-    glAttachShader(program_id, fragment);
-    glLinkProgram(program_id);
+    // Linking shaders
+    program = glCreateProgram();
+    glAttachShader(program, vertex);
+    glAttachShader(program, fragment);
+    glLinkProgram(program);
 
-    glGetProgramiv(program_id, GL_LINK_STATUS, &success);
+    glGetProgramiv(program, GL_LINK_STATUS, &success);
     if (!success) {
-        glGetProgramInfoLog(program_id, 512, NULL, info_log);
+        glGetProgramInfoLog(program, 512, NULL, infoLog);
         std::cout << "Error occured while linking shader program\n";
     }
 
@@ -55,11 +56,11 @@ Shader::Shader(std::string fragment_shader_path, std::string vertex_shader_path)
 }
 
 void Shader::Use() {
-    glUseProgram(program_id);
+    glUseProgram(program);
 }
 
 unsigned int Shader::GetProgramID() {
-    return program_id;
+    return program;
 }
 
 std::string Shader::ReadFile(std::string path) {

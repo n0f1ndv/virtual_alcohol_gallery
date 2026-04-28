@@ -61,6 +61,8 @@ void Window::Loop() {
         glm::mat4 M = glm::mat4(1.0f);
     
         shader.Use();
+        // TODO:
+        // Create helper functions to setting uniform values (It's completely optional ;*)
         glUniformMatrix4fv(glGetUniformLocation(shader.GetProgramID(), "P"), 1, false, glm::value_ptr(P));
         glUniformMatrix4fv(glGetUniformLocation(shader.GetProgramID(), "V"), 1, false, glm::value_ptr(V));
         glUniformMatrix4fv(glGetUniformLocation(shader.GetProgramID(), "M"), 1, false, glm::value_ptr(M));

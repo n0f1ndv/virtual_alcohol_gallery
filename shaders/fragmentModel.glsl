@@ -1,8 +1,5 @@
 #version 330 core
 
-// TODO:
-// * Review this code (TOP PRIORITY)
-
 in vec3 vNormal;
 in vec2 vTex;
 in vec3 vWorldPos;
@@ -19,13 +16,17 @@ void main() {
     vec3 L = normalize(uLightPos - vWorldPos);
     float diff = max(dot(N,L), 0.0);
     vec3 base = texture(uTexture, vTex).rgb;
+
     if(length(base) < 0.001) base = uColor;
+
     vec3 ambient = 0.15 * base;
     vec3 diffuse = diff * base;
     vec3 V = normalize(uViewPos - vWorldPos);
     vec3 R = reflect(-L, N);
     float spec = pow(max(dot(R, V), 0.0), 32.0);
     vec3 specular = vec3(0.3) * spec;
+    
     vec3 color = ambient + diffuse + specular;
+    
     FragColor = vec4(color, 1.0);
 }
