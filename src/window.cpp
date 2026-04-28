@@ -60,7 +60,7 @@ void Window::Loop() {
         // Drawing goes here :D
         // TODO:
         // * Move drawing into its own function (or create class that manages scenes) (TOP PRIOTITY)
-        // * Add camera
+        // * Add camera (TOP PRIORITY)
         glm::vec3 cameraPosition = glm::vec3(0.0f, 0.0f, -10.0f);
         glm::vec3 modelColor = glm::vec3(0.792f, 0.929f, 1.000f);
         glm::vec3 lightPosition = glm::vec3(2.0f, 2.0f, -4.0f);
