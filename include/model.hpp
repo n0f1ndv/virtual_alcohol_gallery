@@ -1,6 +1,7 @@
 #pragma once
 
 #include <GL/glew.h>
+#include <glm/glm.hpp>
 
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
@@ -13,6 +14,10 @@ struct Vertex {
     float Position[3];
     float Normal[3];
     float TexCoords[2];
+};
+struct BoundingBox {
+    glm::vec3 min;
+    glm::vec3 max;
 };
 
 class Mesh {
@@ -51,4 +56,6 @@ public:
 
     void Load(const std::string& path);
     void Draw(GLuint program);
+
+    BoundingBox baseBox;
 };

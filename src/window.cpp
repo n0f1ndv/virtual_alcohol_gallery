@@ -37,8 +37,29 @@ Window::Window(float windowLength, float windowHeight, std::string windowTitle)
     glfwSetErrorCallback(errorCallback);
 }
 
+
+
 Window::~Window() {
     glfwTerminate();
+}
+
+//--kolizja--
+bool CheckCollision(const BoundingBox& a, const BoundingBox& b) {
+    return (a.min.x <= b.max.x && a.max.x >= b.min.x) &&
+           (a.min.y <= b.max.y && a.max.y >= b.min.y) &&
+           (a.min.z <= b.max.z && a.max.z >= b.min.z);
+}
+
+BoundingBox TransformBox(BoundingBox base, glm::vec3 pos, glm::vec3 scale) {
+    BoundingBox transformed;
+    transformed.min = (base.min * scale) + pos;
+    transformed.max = (base.max * scale) + pos;
+    return transformed;
+}
+
+BoundingBox getPlayerBox(glm::vec3 pos) {
+    float size = 1.0f;
+    return { pos - glm::vec3(size, 1.0f, size), pos + glm::vec3(size, 1.0f, size) };
 }
 
 void Window::Loop() { 
@@ -57,6 +78,18 @@ void Window::Loop() {
     Model wine;
     wine.Load("models/wine.obj");
 
+    std::vector<BoundingBox> colliders;
+    
+    colliders.push_back(TransformBox(cube.baseBox, 
+        glm::vec3(4.0f, -1.5f, 2.0f), 
+        glm::vec3(0.5f, 1.25f, 0.5f) 
+    ));
+
+    colliders.push_back(TransformBox(cube.baseBox, 
+        glm::vec3(4.0f, -1.5f, -2.0f), 
+        glm::vec3(0.5f, 1.25f, 0.5f)
+    ));
+
     float var;
     while (!glfwWindowShouldClose(window)) {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); 
@@ -64,9 +97,24 @@ void Window::Loop() {
         glm::vec3 flatFront;
         if (camera.fly) {flatFront = glm::normalize(glm::vec3(camera.front.x, 0.0f, camera.front.z));}
         else {flatFront = glm::normalize(glm::vec3(camera.front.x, camera.front.y, camera.front.z));}
+        
         glm::vec3 right = glm::normalize(glm::cross(flatFront, glm::vec3(0.0f, 1.0f, 0.0f)));
         glm::vec3 velocity = (flatFront * camera.speed_z) - (right * camera.speed_y);
-        camera.position += velocity * (float)glfwGetTime(); 
+        
+        glm::vec3 nextPosition = camera.position + (velocity * (float)glfwGetTime());
+        BoundingBox nextPlayerBox = getPlayerBox(nextPosition);
+
+        bool collision = false;
+            for (const auto& box : colliders) {
+                if (CheckCollision(nextPlayerBox, box)) {
+                    collision = true;
+                    break;
+                }
+            }
+        
+        if (!collision || !camera.fly) {
+                camera.position = nextPosition; 
+            } 
 
         var += M_PI * glfwGetTime();
         glfwSetTime(0);
@@ -100,12 +148,13 @@ void Window::Loop() {
 
         cube.Draw(shader.GetProgramID());
 
-        //szybka podłowa w clankerze do wyrzucenia potem
+        //szybka podłoga w clankerze do wyrzucenia potem
 
         DrawEntity(shader, floor, 
             glm::vec3(0.0f, -3.0f, 0.0f), //position
             glm::vec3(0.0f), //rotation
             glm::vec3(20.0f, 0.1f, 20.0f)); //scale
+
 
         DrawEntity(shader, cube, 
             glm::vec3(4.0f, -1.5f, 2.0f),

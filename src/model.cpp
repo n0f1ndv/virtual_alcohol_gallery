@@ -1,6 +1,10 @@
 #include "model.hpp"
 
+
 #include "lodepng.h"
+
+#include <cfloat>
+#include <algorithm>
 
 #include <iostream>
 #include <cstring>
@@ -220,6 +224,24 @@ void Model::Load(const std::string& path) {
     directory = (p == std::string::npos) ? std::string() : path.substr(0, p+1);
 
     ProcessNode(scene->mRootNode, scene);
+
+    // --- kolizje ---
+    glm::vec3 minV = glm::vec3(FLT_MAX);
+    glm::vec3 maxV = glm::vec3(-FLT_MAX);
+
+    for (const auto& mesh : meshes) {
+        for (const auto& vertex : mesh.vertices) {
+            minV.x = std::min(minV.x, vertex.Position[0]);
+            minV.y = std::min(minV.y, vertex.Position[1]);
+            minV.z = std::min(minV.z, vertex.Position[2]);
+
+            maxV.x = std::max(maxV.x, vertex.Position[0]);
+            maxV.y = std::max(maxV.y, vertex.Position[1]);
+            maxV.z = std::max(maxV.z, vertex.Position[2]);
+        }
+    }
+
+    baseBox = { minV, maxV };
 }
 
 void Model::Draw(GLuint program) {
