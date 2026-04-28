@@ -1,16 +1,12 @@
 #pragma once
 
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
-
 #include <string>
-#include <iostream>
-#include <fstream>
-#include <sstream>
 
 class Shader {
     private:
         unsigned int program_id;
+
+        std::string ReadFile(std::string path);
 
     public:
         Shader(std::string fragment_shader_path, std::string vertex_shader_path);

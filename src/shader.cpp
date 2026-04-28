@@ -1,44 +1,21 @@
 #include "shader.hpp"
 
-// TODO:
-// * Review this code (TOP PRIORITY)
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
+
+#include <iostream>
+#include <fstream>
+#include <sstream>
 
 Shader::Shader(std::string fragment_shader_path, std::string vertex_shader_path) {
-    // Reading files should have its own function imo
-    std::string fragment_shader_code;
-    std::string vertex_shader_code;
-
-    std::ifstream fragment_shader_file;
-    std::ifstream vertex_shader_file;
-
-    vertex_shader_file.exceptions (std::ifstream::failbit | std::ifstream::badbit);
-    fragment_shader_file.exceptions (std::ifstream::failbit | std::ifstream::badbit);
-    try {
-        fragment_shader_file.open(fragment_shader_path.c_str());
-        vertex_shader_file.open(vertex_shader_path.c_str());
-
-        std::stringstream fragment_shader_stream;
-        std::stringstream vertex_shader_stream;
-
-        fragment_shader_stream << fragment_shader_file.rdbuf();   
-        vertex_shader_stream << vertex_shader_file.rdbuf();
-
-        fragment_shader_file.close();
-        vertex_shader_file.close();
-
-        fragment_shader_code = fragment_shader_stream.str();
-        vertex_shader_code = vertex_shader_stream.str();
-    }
-    catch (std::ifstream::failure e) {
-        std::cout << "Error occured while reading from file\n";
-    }
+    std::string code = ReadFile(vertex_shader_path);
 
     int success;
     char info_log[512];
 
     // Vertex Shader compilation
     unsigned int vertex = glCreateShader(GL_VERTEX_SHADER);
-    const char* v_code = vertex_shader_code.c_str();
+    const char* v_code = code.c_str();
     glShaderSource(vertex, 1, &v_code, NULL);
     glCompileShader(vertex);
 
@@ -48,9 +25,11 @@ Shader::Shader(std::string fragment_shader_path, std::string vertex_shader_path)
         std::cout << "Error occured while compiling vertex shader\n";
     }
 
-    // Vertex Shader compilation
+    // Fragment Shader compilation
+    code = ReadFile(fragment_shader_path);
+
     unsigned int fragment = glCreateShader(GL_FRAGMENT_SHADER);
-    const char* f_code = fragment_shader_code.c_str();
+    const char* f_code = code.c_str();
     glShaderSource(fragment, 1 , &f_code, NULL);
     glCompileShader(fragment);
 
@@ -81,4 +60,26 @@ void Shader::Use() {
 
 unsigned int Shader::GetProgramID() {
     return program_id;
+}
+
+std::string Shader::ReadFile(std::string path) {
+    std::string text;
+
+    std::ifstream file;
+
+    file.exceptions (std::ifstream::failbit | std::ifstream::badbit);
+    try {
+        file.open(path.c_str());
+
+        std::stringstream stream;
+
+        stream << file.rdbuf();
+        file.close();
+        text = stream.str();
+    }
+    catch (std::ifstream::failure e) {
+        std::cout << "Error occured while reading from file\n";
+    }
+
+    return text;
 }
