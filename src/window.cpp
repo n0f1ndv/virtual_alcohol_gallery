@@ -70,9 +70,6 @@ void Window::Loop() {
     Model cube;
     cube.Load("models/cube.obj");
 
-    Model floor;
-    floor.Load("models/cube.obj");
-
     Model wine;
     wine.Load("models/wine.obj");
 
@@ -135,7 +132,7 @@ void Window::Loop() {
         glUniform3fv(glGetUniformLocation(shader.GetProgramID(), "uViewPos"), 1, glm::value_ptr(camera.position));
         glUniform3fv(glGetUniformLocation(shader.GetProgramID(), "uColor"), 1, glm::value_ptr(modelColor));
 
-        floor.Draw(shader.GetProgramID(), 
+        cube.Draw(shader.GetProgramID(), 
             glm::vec3(0.0f, -3.0f, 0.0f),   // position
             glm::vec3(0.0f),                // rotation
             glm::vec3(20.0f, 0.1f, 20.0f),  // scale
@@ -165,7 +162,7 @@ void Window::Loop() {
 
         wine.Draw(shader.GetProgramID(), 
             glm::vec3(4.0f, -0.25f, -2.0f),
-            glm::vec3(-90.0f * var, 0.0f, 0.0f),
+            glm::vec3(-90.0f, 0.0f, 0.0f),
             glm::vec3(0.06f, 0.06f, 0.06f),
             glm::vec3(1.0f,0.0f,0.0f)
         );
