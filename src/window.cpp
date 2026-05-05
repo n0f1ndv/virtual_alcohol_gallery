@@ -2,7 +2,6 @@
 #include "camera.hpp"
 #include "model.hpp"
 #include "shader.hpp"
-#include "renderer.hpp"
 
 #include <cmath>
 
@@ -146,39 +145,40 @@ void Window::Loop() {
         glUniform3fv(glGetUniformLocation(shader.GetProgramID(), "uViewPos"), 1, glm::value_ptr(camera.position));
         glUniform3fv(glGetUniformLocation(shader.GetProgramID(), "uColor"), 1, glm::value_ptr(modelColor));
 
-        cube.Draw(shader.GetProgramID());
+        floor.Draw(shader.GetProgramID(), 
+            glm::vec3(0.0f, -3.0f, 0.0f),   // position
+            glm::vec3(0.0f),                // rotation
+            glm::vec3(20.0f, 0.1f, 20.0f),  // scale
+            glm::vec3(0.2f,0.2f,0.2f)       // color
+        ); 
 
-        //szybka podłoga w clankerze do wyrzucenia potem
-
-        DrawEntity(shader, floor, 
-            glm::vec3(0.0f, -3.0f, 0.0f), //position
-            glm::vec3(0.0f), //rotation
-            glm::vec3(20.0f, 0.1f, 20.0f)); //scale
-
-
-        DrawEntity(shader, cube, 
+        cube.Draw(shader.GetProgramID(), 
             glm::vec3(4.0f, -1.5f, 2.0f),
             glm::vec3(0.0f),
             glm::vec3(0.5f, 1.25f, 0.5f),
-            glm::vec3(0.8f,0.7f,0.4f));
+            glm::vec3(0.8f,0.7f,0.4f)
+        ); 
 
-        DrawEntity(shader, wine,
+        wine.Draw(shader.GetProgramID(), 
             glm::vec3(4.0f, -0.25f, 2.0f),
             glm::vec3(-90.0f, 0.0f, 0.0f),
             glm::vec3(0.06f, 0.06f, 0.06f),
-            glm::vec3(0.0f,0.5f,0.5f));
+            glm::vec3(0.0f,0.5f,0.5f)
+        ); 
 
-        DrawEntity(shader, cube, 
+        cube.Draw(shader.GetProgramID(), 
             glm::vec3(4.0f, -1.5f, -2.0f),
             glm::vec3(0.0f),
             glm::vec3(0.5f, 1.25f, 0.5f),
-            glm::vec3(0.2f,0.2f,0.2f));
+            glm::vec3(0.2f,0.2f,0.2f)
+        ); 
 
-        DrawEntity(shader, wine,
+        wine.Draw(shader.GetProgramID(), 
             glm::vec3(4.0f, -0.25f, -2.0f),
             glm::vec3(-90.0f, 0.0f, 0.0f),
             glm::vec3(0.06f, 0.06f, 0.06f),
-            glm::vec3(1.0f,0.0f,0.0f));
+            glm::vec3(1.0f,0.0f,0.0f)
+        );
 
         glfwSwapBuffers(window);
 

@@ -1,7 +1,10 @@
 #pragma once
 
 #include <GL/glew.h>
+
 #include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
@@ -55,7 +58,7 @@ public:
     ~Model();
 
     void Load(const std::string& path);
-    void Draw(GLuint program);
+    void Draw(GLuint program, glm::vec3 position, glm::vec3 rotation, glm::vec3 scale, glm::vec3 color);
 
     BoundingBox baseBox;
 };

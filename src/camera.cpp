@@ -29,7 +29,7 @@ void Camera::cursorPositionCallback(GLFWwindow* window, double xpos, double ypos
 }
 
 void Camera::handleKey(int key, int scancode, int action, int mods) {
-    std::cout << position.x << ", " << position.y << ", " << position.z << ", " << "\n";
+    // std::cout << position.x << ", " << position.y << ", " << position.z << ", " << "\n";
 
     if (glfwGetKey(window, GLFW_KEY_ENTER) == GLFW_PRESS) {
             glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);

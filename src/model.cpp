@@ -244,7 +244,21 @@ void Model::Load(const std::string& path) {
     baseBox = { minV, maxV };
 }
 
-void Model::Draw(GLuint program) {
+void Model::Draw(GLuint program, glm::vec3 position, glm::vec3 rotation, glm::vec3 scale, glm::vec3 color) {
+    glm::mat4 M = glm::mat4(1.0f);
+    
+    M = glm::translate(M, position);
+    
+    M = glm::rotate(M, glm::radians(rotation.x), glm::vec3(1.0f, 0.0f, 0.0f));
+    M = glm::rotate(M, glm::radians(rotation.y), glm::vec3(0.0f, 1.0f, 0.0f));
+    M = glm::rotate(M, glm::radians(rotation.z), glm::vec3(0.0f, 0.0f, 1.0f));
+    
+    M = glm::scale(M, scale);
+
+    glUniformMatrix4fv(glGetUniformLocation(program, "M"), 1, GL_FALSE, glm::value_ptr(M));
+
+    glUniform3fv(glGetUniformLocation(program, "uColor"), 1, glm::value_ptr(color));
+
     for (auto &m : meshes) 
         m.Draw(program);
 }
