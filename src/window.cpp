@@ -10,7 +10,8 @@
 
 Window::Window(float windowLength, float windowHeight, std::string windowTitle)
     : windowHeight{windowHeight}
-    , windowLength{windowLength} {
+    , windowLength{windowLength}
+    , aspectRatio{windowLength / windowHeight} {
     if (!glfwInit()) {
         std::cerr << "ERROR: Failed to initialize GLFW\n";
     }
@@ -32,17 +33,18 @@ Window::Window(float windowLength, float windowHeight, std::string windowTitle)
     glEnable(GL_DEPTH_TEST);
 
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+    glfwSetCursorPos(window, windowLength / 2, windowHeight / 2);
 
-    glfwSetErrorCallback(errorCallback);
+    glfwSetWindowSizeCallback(window, Window::windowResizeCallback);
+    glfwSetErrorCallback(Window::errorCallback);
 }
-
-
 
 Window::~Window() {
     glfwTerminate();
 }
 
-//--kolizja--
+// TODO:
+// * Move collision handling somewhere else (maybe to model or its own class)
 bool CheckCollision(const BoundingBox& a, const BoundingBox& b) {
     return (a.min.x <= b.max.x && a.max.x >= b.min.x) &&
            (a.min.y <= b.max.y && a.max.y >= b.min.y) &&
@@ -65,7 +67,6 @@ void Window::Loop() {
     Camera camera(window, glm::vec3(0.0f, 0.0f, -10.0f));
 
     Shader shader = Shader("shaders/fragmentModel.glsl", "shaders/vertexModel.glsl");
-    glfwSetCursorPos(window, windowLength / 2, windowHeight / 2);
     Model cube;
     cube.Load("models/cube.obj");
 
@@ -77,12 +78,14 @@ void Window::Loop() {
 
     std::vector<BoundingBox> colliders;
     
-    colliders.push_back(TransformBox(cube.baseBox, 
+    colliders.push_back(TransformBox(
+        cube.baseBox, 
         glm::vec3(4.0f, -1.5f, 2.0f), 
         glm::vec3(0.5f, 1.25f, 0.5f) 
     ));
 
-    colliders.push_back(TransformBox(cube.baseBox, 
+    colliders.push_back(TransformBox(
+        cube.baseBox, 
         glm::vec3(4.0f, -1.5f, -2.0f), 
         glm::vec3(0.5f, 1.25f, 0.5f)
     ));
@@ -119,8 +122,7 @@ void Window::Loop() {
         glm::vec3 modelColor = glm::vec3(0.792f, 0.929f, 1.000f);
         glm::vec3 lightPosition = glm::vec3(2.0f, 2.0f, -4.0f);
 
-        glm::mat4 P = glm::perspective(glm::radians(50.0f), windowLength / windowHeight, 1.0f, 50.0f);
-        // glm::mat4 V = glm::lookAt(camera.position, glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+        glm::mat4 P = glm::perspective(glm::radians(50.0f), aspectRatio, 1.0f, 50.0f);
         glm::mat4 V = glm::lookAt(camera.position, camera.position + camera.front, glm::vec3(0.0f, 1.0f, 0.0f));
         glm::mat4 M = glm::mat4(1.0f);
     
@@ -174,6 +176,25 @@ void Window::Loop() {
     }
 }
 
-void errorCallback(int error, const char* description) {
+void Window::handleResizing(int width, int height) {
+    if (height == 0)
+        return;
+            
+    aspectRatio = (float)width / (float)height;
+    glViewport(0, 0, width, height);
+}
+
+void Window::handleError(int error, const char* description) {
     std::cerr << "GLFW ERROR: " << error << ": " << description << "\n";
+}
+
+void Window::windowResizeCallback(GLFWwindow* window, int width, int height) {
+    Window* instance = static_cast<Window*>(glfwGetWindowUserPointer(window));
+    if (instance) {
+        instance->handleResizing(width, height);
+    }
+}
+
+void Window::errorCallback(int error, const char* description) {
+    handleError(error, description);
 }
