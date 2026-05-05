@@ -51,7 +51,7 @@ rm -rf build
 ## Usage & Quick Start
 Run the executables with:
 ```bash
-./bin/run
+./build/app
 ```
 
 Controls: \
