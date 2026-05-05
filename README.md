@@ -32,9 +32,15 @@ Install the repository:
 ```bash
 git clone https://github.com/n0f1ndv/virtual_alcohol_gallery
 ```
-Compile it using make:
+Compile it using cmake:
+Generate build files
 ```bash
-make
+cmake -S . -B build
+```
+
+ Build project
+```bash
+cmake --build build
 ```
 
 ## Usage & Quick Start

@@ -64,13 +64,11 @@ BoundingBox getPlayerBox(glm::vec3 pos) {
 void Window::Loop() { 
     Camera camera(window, glm::vec3(0.0f, 0.0f, -10.0f));
 
-
     Shader shader = Shader("shaders/fragmentModel.glsl", "shaders/vertexModel.glsl");
-    glfwSetCursorPos(window, 1280.0f / 2, 720.0f / 2);
+    glfwSetCursorPos(window, windowLength / 2, windowHeight / 2);
     Model cube;
     cube.Load("models/cube.obj");
 
-    //do podłogi
     Model floor;
     floor.Load("models/cube.obj");
 
@@ -118,11 +116,6 @@ void Window::Loop() {
         var += M_PI * glfwGetTime();
         glfwSetTime(0);
 
-        // Drawing goes here :D
-        // TODO:
-        // * Move drawing into its own function (or create class that manages scenes) (TOP PRIOTITY)
-        // * Implement camera (TOP PRIORITY)
-        // * Implement better way to place models
         glm::vec3 modelColor = glm::vec3(0.792f, 0.929f, 1.000f);
         glm::vec3 lightPosition = glm::vec3(2.0f, 2.0f, -4.0f);
 
@@ -130,13 +123,8 @@ void Window::Loop() {
         // glm::mat4 V = glm::lookAt(camera.position, glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
         glm::mat4 V = glm::lookAt(camera.position, camera.position + camera.front, glm::vec3(0.0f, 1.0f, 0.0f));
         glm::mat4 M = glm::mat4(1.0f);
-
-        M = glm::scale(M, glm::vec3(0.001f,0.001f,0.001f));
-        M = glm::rotate(M, glm::radians(20 * var), glm::vec3(1.0f, 1.0f, 0.0f));
     
         shader.Use();
-        // TODO:
-        // * Create helper functions to setting uniform values (It's completely optional ;*)
         glUniformMatrix4fv(glGetUniformLocation(shader.GetProgramID(), "P"), 1, false, glm::value_ptr(P));
         glUniformMatrix4fv(glGetUniformLocation(shader.GetProgramID(), "V"), 1, false, glm::value_ptr(V));
         glUniformMatrix4fv(glGetUniformLocation(shader.GetProgramID(), "M"), 1, false, glm::value_ptr(M));
@@ -175,7 +163,7 @@ void Window::Loop() {
 
         wine.Draw(shader.GetProgramID(), 
             glm::vec3(4.0f, -0.25f, -2.0f),
-            glm::vec3(-90.0f, 0.0f, 0.0f),
+            glm::vec3(-90.0f * var, 0.0f, 0.0f),
             glm::vec3(0.06f, 0.06f, 0.06f),
             glm::vec3(1.0f,0.0f,0.0f)
         );
