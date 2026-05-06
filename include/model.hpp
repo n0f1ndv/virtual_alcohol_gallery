@@ -1,5 +1,7 @@
 #pragma once
 
+#include "collision.hpp"
+
 #include <GL/glew.h>
 
 #include <glm/glm.hpp>
@@ -17,10 +19,6 @@ struct Vertex {
     float Position[3];
     float Normal[3];
     float TexCoords[2];
-};
-struct BoundingBox {
-    glm::vec3 min;
-    glm::vec3 max;
 };
 
 class Mesh {

@@ -1,6 +1,5 @@
 #include "model.hpp"
 
-
 #include "lodepng.h"
 
 #include <cfloat>

@@ -41,34 +41,7 @@ void Camera::handleKey(int key, int scancode, int action, int mods) {
     if (glfwGetKey(window, GLFW_KEY_U) == GLFW_PRESS) {
         if(fly) fly = false;
         else fly = true;
-     }
-
-    //do usunięcia potem
-
-    // if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
-    //     speed_z = speed
-    // }
-    // if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
-    //     speed_z = -speed
-    // }
-    // if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
-    //     speed_y = speed
-    // }
-    // if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
-    //     speed_y = -speed
-    // }
-    // if (glfwGetKey(window, GLFW_KEY_W) == GLFW_RELEASE) {
-    //     speed_z = speed
-    // }
-    // if (glfwGetKey(window, GLFW_KEY_S) == GLFW_RELEASE) {
-    //     speed_z = -speed
-    // }
-    // if (glfwGetKey(window, GLFW_KEY_D) == GLFW_RELEASE) {
-    //     speed_y = speed
-    // }
-    // if (glfwGetKey(window, GLFW_KEY_A) == GLFW_RELEASE) {
-    //     speed_y = -speed
-    // }
+    }
 
     if (action == GLFW_PRESS) {
 		if (key == GLFW_KEY_A) speed_y = speed;
