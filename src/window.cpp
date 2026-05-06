@@ -44,104 +44,60 @@ Window::~Window() {
     glfwTerminate();
 }
 
-void Window::Loop() { 
-    Camera camera(window, glm::vec3(0.0f, 0.0f, -10.0f));
+void Window::Loop() {
+    Shader shader("shaders/fragmentModel.glsl", "shaders/vertexModel.glsl");
+    
+    Camera camera(window, shader.program, glm::vec3(0.0f, 0.0f, -10.0f));
 
-    Shader shader = Shader("shaders/fragmentModel.glsl", "shaders/vertexModel.glsl");
     Model cube;
     cube.Load("models/cube.obj");
 
     Model wine;
     wine.Load("models/wine.obj");
 
-    std::vector<BoundingBox> colliders;
-    
-    colliders.push_back(TransformBox(
-        cube.baseBox, 
-        glm::vec3(4.0f, -1.5f, 2.0f), 
-        glm::vec3(0.5f, 1.25f, 0.5f) 
-    ));
-
-    colliders.push_back(TransformBox(
-        cube.baseBox, 
-        glm::vec3(4.0f, -1.5f, -2.0f), 
-        glm::vec3(0.5f, 1.25f, 0.5f)
-    ));
-
-    float var;
     while (!glfwWindowShouldClose(window)) {
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); 
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        glm::vec3 flatFront;
-        if (camera.fly) {flatFront = glm::normalize(glm::vec3(camera.front.x, 0.0f, camera.front.z));}
-        else {flatFront = glm::normalize(glm::vec3(camera.front.x, camera.front.y, camera.front.z));}
+        shader.Use();
+    
+        camera.Update(aspectRatio);
         
-        glm::vec3 right = glm::normalize(glm::cross(flatFront, glm::vec3(0.0f, 1.0f, 0.0f)));
-        glm::vec3 velocity = (flatFront * camera.speed_z) - (right * camera.speed_y);
-        
-        glm::vec3 nextPosition = camera.position + (velocity * (float)glfwGetTime());
-        BoundingBox nextPlayerBox = getPlayerBox(nextPosition);
-
-        bool collision = false;
-            for (const auto& box : colliders) {
-                if (CheckCollision(nextPlayerBox, box)) {
-                    collision = true;
-                    break;
-                }
-            }
-        
-        if (!collision || !camera.fly) {
-                camera.position = nextPosition; 
-            } 
-
-        var += M_PI * glfwGetTime();
-        glfwSetTime(0);
-
+        // This piece of garbage goes to the scene class
         glm::vec3 modelColor = glm::vec3(0.792f, 0.929f, 1.000f);
         glm::vec3 lightPosition = glm::vec3(2.0f, 2.0f, -4.0f);
 
-        glm::mat4 P = glm::perspective(glm::radians(50.0f), aspectRatio, 1.0f, 50.0f);
-        glm::mat4 V = glm::lookAt(camera.position, camera.position + camera.front, glm::vec3(0.0f, 1.0f, 0.0f));
-        glm::mat4 M = glm::mat4(1.0f);
-    
-        shader.Use();
-        glUniformMatrix4fv(glGetUniformLocation(shader.GetProgramID(), "P"), 1, false, glm::value_ptr(P));
-        glUniformMatrix4fv(glGetUniformLocation(shader.GetProgramID(), "V"), 1, false, glm::value_ptr(V));
-        glUniformMatrix4fv(glGetUniformLocation(shader.GetProgramID(), "M"), 1, false, glm::value_ptr(M));
+        glUniform3fv(glGetUniformLocation(shader.program, "uLightPos"), 1, glm::value_ptr(lightPosition));
+        glUniform3fv(glGetUniformLocation(shader.program, "uColor"), 1, glm::value_ptr(modelColor));
 
-        glUniform3fv(glGetUniformLocation(shader.GetProgramID(), "uLightPos"), 1, glm::value_ptr(lightPosition));
-        glUniform3fv(glGetUniformLocation(shader.GetProgramID(), "uViewPos"), 1, glm::value_ptr(camera.position));
-        glUniform3fv(glGetUniformLocation(shader.GetProgramID(), "uColor"), 1, glm::value_ptr(modelColor));
-
-        cube.Draw(shader.GetProgramID(), 
+        cube.Draw(shader.program, 
             glm::vec3(0.0f, -3.0f, 0.0f),   // position
             glm::vec3(0.0f),                // rotation
             glm::vec3(20.0f, 0.1f, 20.0f),  // scale
             glm::vec3(0.2f,0.2f,0.2f)       // color
         ); 
 
-        cube.Draw(shader.GetProgramID(), 
+        cube.Draw(shader.program, 
             glm::vec3(4.0f, -1.5f, 2.0f),
             glm::vec3(0.0f),
             glm::vec3(0.5f, 1.25f, 0.5f),
             glm::vec3(0.8f,0.7f,0.4f)
         ); 
 
-        wine.Draw(shader.GetProgramID(), 
+        wine.Draw(shader.program, 
             glm::vec3(4.0f, -0.25f, 2.0f),
             glm::vec3(-90.0f, 0.0f, 0.0f),
             glm::vec3(0.06f, 0.06f, 0.06f),
             glm::vec3(0.0f,0.5f,0.5f)
         ); 
 
-        cube.Draw(shader.GetProgramID(), 
+        cube.Draw(shader.program, 
             glm::vec3(4.0f, -1.5f, -2.0f),
             glm::vec3(0.0f),
             glm::vec3(0.5f, 1.25f, 0.5f),
             glm::vec3(0.2f,0.2f,0.2f)
         ); 
 
-        wine.Draw(shader.GetProgramID(), 
+        wine.Draw(shader.program, 
             glm::vec3(4.0f, -0.25f, -2.0f),
             glm::vec3(-90.0f, 0.0f, 0.0f),
             glm::vec3(0.06f, 0.06f, 0.06f),

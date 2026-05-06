@@ -1,15 +1,40 @@
 #pragma once
 
+#include <GL/glew.h>
 #include <GLFW/glfw3.h>
+
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
 class Camera {
+public:
+    glm::vec3 position;
+    glm::vec3 front = glm::vec3(0.0f, 0.0f, 10.0f); 
+
+    //zmienne do ruchu
+    float speed_y = 0.0f;
+    float speed_z = 0.0f;
+    bool fly = true;
+
+    Camera(GLFWwindow* window, GLuint program, glm::vec3 position);
+    ~Camera();
+
+    void Update(float aspectRatio);
+
+    static void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
+    static void cursorPositionCallback(GLFWwindow* window, double xpos, double ypos);
+
 private:
     void handleKey(int key, int scancode, int action, int mods);
     void handleMouse(double xpos, double ypos);
     
     GLFWwindow* window;
+    GLuint program;
+
+    glm::mat4 P;
+    glm::mat4 V;
+
+    glm::vec3 flatFront;
 
     //pozycje startowe dla kamery oraz myszki
     float yaw = -90.0f;
@@ -18,21 +43,5 @@ private:
     float lastY = 360.0f; 
     bool firstMouse = true;
 
-    float speed = 8;;
-
-public:
-    glm::vec3 position;
-
-    glm::vec3 front = glm::vec3(0.0f, 0.0f, 10.0f); 
-
-    Camera(GLFWwindow* window, glm::vec3 position);
-    ~Camera();
-
-    //zmienne do ruchu
-    float speed_y = 0.0f;
-    float speed_z = 0.0f;
-    bool fly = true;
-
-    static void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
-    static void cursorPositionCallback(GLFWwindow* window, double xpos, double ypos);
+    float speed = 8;
 };

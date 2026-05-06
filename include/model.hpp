@@ -43,7 +43,7 @@ private:
     GLuint VAO, VBO, EBO;
 };
 
-class Model 
+class Model {
 public:
     Model();
     ~Model();

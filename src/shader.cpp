@@ -59,10 +59,6 @@ void Shader::Use() {
     glUseProgram(program);
 }
 
-unsigned int Shader::GetProgramID() {
-    return program;
-}
-
 std::string Shader::ReadFile(std::string path) {
     std::string text;
 

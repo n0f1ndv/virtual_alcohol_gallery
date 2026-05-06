@@ -1,10 +1,15 @@
 #include "camera.hpp"
 
+#include "collision.hpp"
+
+#include <glm/gtc/type_ptr.hpp>
+
 #include <iostream>
 
-Camera::Camera(GLFWwindow* window, glm::vec3 position) 
-    : window(window)
-    , position(position) {
+Camera::Camera(GLFWwindow* window, GLuint program, glm::vec3 position) 
+    : position(position)
+    , window(window)
+    , program(program) {
     
     glfwSetWindowUserPointer(window, this);
 
@@ -13,6 +18,57 @@ Camera::Camera(GLFWwindow* window, glm::vec3 position)
 }
 
 Camera::~Camera() {}
+
+void Camera::Update(float aspectRatio) {
+    if (fly) 
+        flatFront = glm::normalize(glm::vec3(front.x, 0.0f, front.z));
+    else
+        flatFront = glm::normalize(glm::vec3(front.x, front.y, front.z));
+    
+    glm::vec3 right = glm::normalize(glm::cross(flatFront, glm::vec3(0.0f, 1.0f, 0.0f)));
+    glm::vec3 velocity = (flatFront * speed_z) - (right * speed_y);
+    
+    glm::vec3 nextPosition = position + (velocity * (float)glfwGetTime());
+
+    // Move this into collision detection NOW
+    // WHY AND HOW IT WORKS PLS EXPLAIN IT TO EM
+    // std::vector<BoundingBox> colliders;
+    
+    // colliders.push_back(TransformBox(
+    //     cube.baseBox, 
+    //     glm::vec3(4.0f, -1.5f, 2.0f), 
+    //     glm::vec3(0.5f, 1.25f, 0.5f) 
+    // ));
+
+    // colliders.push_back(TransformBox(
+    //     cube.baseBox, 
+    //     glm::vec3(4.0f, -1.5f, -2.0f), 
+    //     glm::vec3(0.5f, 1.25f, 0.5f)
+    // ));
+
+    // BoundingBox nextPlayerBox = getPlayerBox(nextPosition);
+
+    // bool collision = false;
+    // for (const auto& box : colliders) {
+    //     if (CheckCollision(nextPlayerBox, box)) {
+    //         collision = true;
+    //         break;
+    //     }
+    // }
+    
+    // if (!collision || !fly) {
+    //     position = nextPosition; 
+    // }
+    // -------------------------------------
+
+    P = glm::perspective(glm::radians(50.0f), aspectRatio, 1.0f, 50.0f);
+    V = glm::lookAt(position, position + front, glm::vec3(0.0f, 1.0f, 0.0f));
+
+    glUniform3fv(glGetUniformLocation(program, "uViewPos"), 1, glm::value_ptr(position));
+
+    glUniformMatrix4fv(glGetUniformLocation(program, "P"), 1, false, glm::value_ptr(P));
+    glUniformMatrix4fv(glGetUniformLocation(program, "V"), 1, false, glm::value_ptr(V));
+}
 
 void Camera::keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods) {
     Camera* instance = static_cast<Camera*>(glfwGetWindowUserPointer(window));
