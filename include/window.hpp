@@ -11,15 +11,6 @@
 #include <string>
 
 class Window {
-private:
-    float windowHeight;
-    float windowLength;
-    float aspectRatio;
-    GLFWwindow* window;
-
-    static void handleError(int error, const char* description);
-    void handleResizing(int width, int height);
-
 public:
     Window(float windowHeight, float windowLength, std::string windowTitle);
     ~Window();
@@ -28,4 +19,13 @@ public:
 
     static void errorCallback(int error, const char* description);
     static void windowResizeCallback(GLFWwindow* window, int width, int height);
+
+private:
+    float windowHeight;
+    float windowLength;
+    float aspectRatio;
+    GLFWwindow* window;
+
+    static void handleError(int error, const char* description);
+    void handleResizing(int width, int height);
 };

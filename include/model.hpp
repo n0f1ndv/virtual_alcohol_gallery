@@ -43,14 +43,7 @@ private:
     GLuint VAO, VBO, EBO;
 };
 
-class Model {
-private:
-    std::vector<Mesh> meshes;
-    std::string directory;
-
-    void ProcessNode(struct aiNode* node, const struct aiScene* scene);
-    Mesh ProcessMesh(struct aiMesh* mesh, const struct aiScene* scene);
-
+class Model 
 public:
     Model();
     ~Model();
@@ -59,4 +52,11 @@ public:
     void Draw(GLuint program, glm::vec3 position, glm::vec3 rotation, glm::vec3 scale, glm::vec3 color);
 
     BoundingBox baseBox;
+
+private:
+    std::vector<Mesh> meshes;
+    std::string directory;
+
+    void ProcessNode(struct aiNode* node, const struct aiScene* scene);
+    Mesh ProcessMesh(struct aiMesh* mesh, const struct aiScene* scene);
 };

@@ -3,14 +3,14 @@
 #include <string>
 
 class Shader {
-    private:
-        unsigned int program;
+public:
+    Shader(std::string fragmentShaderPath, std::string vertexShaderPath);
 
-        std::string ReadFile(std::string path);
+    void Use();
+    unsigned int GetProgramID();
+    
+private:
+    unsigned int program;
 
-    public:
-        Shader(std::string fragmentShaderPath, std::string vertexShaderPath);
-
-        void Use();
-        unsigned int GetProgramID();
+    std::string ReadFile(std::string path);
 };
