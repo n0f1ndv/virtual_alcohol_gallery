@@ -3,6 +3,13 @@
 
   Virtual Alcohol Gallery is a simple visualization project using c++ and opengl.
   
+## TODO
+List of features left to implement:
+ - Fractals;
+ - Various visual effects caused by drinking alcohol;
+ - Picking up bottles (ray-casting);
+ - Animation of drinking;
+ - Loading textures.
 
 ## Installation & Compilation
 
