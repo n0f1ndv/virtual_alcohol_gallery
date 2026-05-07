@@ -25,41 +25,11 @@ void Camera::Update(float aspectRatio) {
     else
         flatFront = glm::normalize(glm::vec3(front.x, front.y, front.z));
     
-    glm::vec3 right = glm::normalize(glm::cross(flatFront, glm::vec3(0.0f, 1.0f, 0.0f)));
-    glm::vec3 velocity = (flatFront * speed_z) - (right * speed_y);
+    right = glm::normalize(glm::cross(flatFront, glm::vec3(0.0f, 1.0f, 0.0f)));
+    velocity = (flatFront * speed_z) - (right * speed_y);
     
-    glm::vec3 nextPosition = position + (velocity * (float)glfwGetTime());
-
-    // Move this into collision detection NOW
-    // WHY AND HOW IT WORKS PLS EXPLAIN IT TO EM
-    // std::vector<BoundingBox> colliders;
-    
-    // colliders.push_back(TransformBox(
-    //     cube.baseBox, 
-    //     glm::vec3(4.0f, -1.5f, 2.0f), 
-    //     glm::vec3(0.5f, 1.25f, 0.5f) 
-    // ));
-
-    // colliders.push_back(TransformBox(
-    //     cube.baseBox, 
-    //     glm::vec3(4.0f, -1.5f, -2.0f), 
-    //     glm::vec3(0.5f, 1.25f, 0.5f)
-    // ));
-
-    // BoundingBox nextPlayerBox = getPlayerBox(nextPosition);
-
-    // bool collision = false;
-    // for (const auto& box : colliders) {
-    //     if (CheckCollision(nextPlayerBox, box)) {
-    //         collision = true;
-    //         break;
-    //     }
-    // }
-    
-    // if (!collision || !fly) {
-    //     position = nextPosition; 
-    // }
-    // -------------------------------------
+    position += velocity * (float)glfwGetTime();
+    glfwSetTime(0);
 
     P = glm::perspective(glm::radians(50.0f), aspectRatio, 1.0f, 50.0f);
     V = glm::lookAt(position, position + front, glm::vec3(0.0f, 1.0f, 0.0f));
@@ -85,18 +55,18 @@ void Camera::cursorPositionCallback(GLFWwindow* window, double xpos, double ypos
 }
 
 void Camera::handleKey(int key, int scancode, int action, int mods) {
-    // std::cout << position.x << ", " << position.y << ", " << position.z << ", " << "\n";
+    std::cout << position.x << ", " << position.y << ", " << position.z << ", " << "\n";
 
     if (glfwGetKey(window, GLFW_KEY_ENTER) == GLFW_PRESS) {
-            glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-        }
+        glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+    }
         
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
         glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
     }
+
     if (glfwGetKey(window, GLFW_KEY_U) == GLFW_PRESS) {
-        if(fly) fly = false;
-        else fly = true;
+        fly = (fly == true) ? false : true;
     }
 
     if (action == GLFW_PRESS) {
@@ -105,18 +75,17 @@ void Camera::handleKey(int key, int scancode, int action, int mods) {
 		if (key == GLFW_KEY_W) speed_z = speed;
 		if (key == GLFW_KEY_S) speed_z = -speed;
 	}
+
 	if (action == GLFW_RELEASE) {
 		if (key == GLFW_KEY_A) speed_y = 0;
 		if (key == GLFW_KEY_D) speed_y = 0;	
 
 		if (key == GLFW_KEY_W) speed_z = 0;
 		if (key == GLFW_KEY_S) speed_z = 0;
-		
 	}
 }
 
 void Camera::handleMouse(double xpos, double ypos) {
-
     if (firstMouse) {
         lastX = xpos;
         lastY = ypos;

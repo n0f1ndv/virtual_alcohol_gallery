@@ -35,6 +35,9 @@ private:
     glm::mat4 V;
 
     glm::vec3 flatFront;
+    glm::vec3 nextPosition;
+    glm::vec3 right;
+    glm::vec3 velocity;
 
     //pozycje startowe dla kamery oraz myszki
     float yaw = -90.0f;
