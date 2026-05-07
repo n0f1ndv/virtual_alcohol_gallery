@@ -22,7 +22,7 @@ Shader::Shader(std::string fragmentShaderPath, std::string vertexShaderPath) {
     glGetShaderiv(vertex, GL_COMPILE_STATUS, &success);
     if (!success) {
         glGetShaderInfoLog(vertex, 512, NULL, infoLog);
-        std::cout << "Error occured while compiling vertex shader\n";
+        std::cout << "ERROR: Compiling vertex shader not successful\n";
     }
 
     // Fragment Shader compilation
@@ -36,7 +36,7 @@ Shader::Shader(std::string fragmentShaderPath, std::string vertexShaderPath) {
     glGetShaderiv(fragment, GL_COMPILE_STATUS, &success);
     if (!success) {
         glGetShaderInfoLog(fragment, 512, NULL, infoLog);
-        std::cout << "Error occured while compiling fragment shader\n";
+        std::cout << "ERROR: Compiling fragment shader not successful\n";
     }
 
     // Linking shaders
@@ -48,7 +48,7 @@ Shader::Shader(std::string fragmentShaderPath, std::string vertexShaderPath) {
     glGetProgramiv(program, GL_LINK_STATUS, &success);
     if (!success) {
         glGetProgramInfoLog(program, 512, NULL, infoLog);
-        std::cout << "Error occured while linking shader program\n";
+        std::cout << "ERROR: Linking shader not successful\n";
     }
 
     glDeleteShader(vertex);
@@ -75,7 +75,7 @@ std::string Shader::ReadFile(std::string path) {
         text = stream.str();
     }
     catch (std::ifstream::failure e) {
-        std::cout << "Error occured while reading from file\n";
+        std::cout << "ERROR: Reading from file not successful\n";
     }
 
     return text;

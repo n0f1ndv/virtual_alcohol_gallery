@@ -72,7 +72,7 @@ void Window::handleResizing(int width, int height) {
 }
 
 void Window::handleError(int error, const char* description) {
-    std::cerr << "GLFW ERROR: " << error << ": " << description << "\n";
+    std::cerr << "ERROR: " << error << ": " << description << "\n";
 }
 
 void Window::windowResizeCallback(GLFWwindow* window, int width, int height) {

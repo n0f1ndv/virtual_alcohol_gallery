@@ -215,7 +215,7 @@ void Model::Load(const std::string& path) {
     );
 
     if (!scene || !scene->mRootNode) {
-        std::cerr << "ERROR Assimp: " << importer.GetErrorString() << "\n";
+        std::cerr << "ASSIMP ERROR: " << importer.GetErrorString() << "\n";
         return;
     }
 
