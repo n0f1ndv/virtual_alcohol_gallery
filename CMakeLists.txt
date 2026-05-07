@@ -13,6 +13,7 @@ set(SOURCES
     src/shader.cpp
     src/window.cpp
     src/collision.cpp
+    src/scene.cpp
 )
 
 add_executable(app ${SOURCES})

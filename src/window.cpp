@@ -3,11 +3,8 @@
 #include "model.hpp"
 #include "shader.hpp"
 #include "collision.hpp"
+#include "scene.hpp"
 
-#include <cmath>
-
-// TODO:
-// * Clean up includes
 
 Window::Window(float windowLength, float windowHeight, std::string windowTitle)
     : windowHeight{windowHeight}
@@ -49,11 +46,7 @@ void Window::Loop() {
     
     Camera camera(window, shader.program, glm::vec3(0.0f, 0.0f, -10.0f));
 
-    Model cube;
-    cube.Load("models/cube.obj");
-
-    Model wine;
-    wine.Load("models/wine.obj");
+    Scene scene(shader.program);
 
     while (!glfwWindowShouldClose(window)) {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -61,48 +54,9 @@ void Window::Loop() {
         shader.Use();
     
         camera.Update(aspectRatio);
-        
-        // This piece of garbage goes to the scene class
-        glm::vec3 modelColor = glm::vec3(0.792f, 0.929f, 1.000f);
-        glm::vec3 lightPosition = glm::vec3(2.0f, 2.0f, -4.0f);
 
-        glUniform3fv(glGetUniformLocation(shader.program, "uLightPos"), 1, glm::value_ptr(lightPosition));
-        glUniform3fv(glGetUniformLocation(shader.program, "uColor"), 1, glm::value_ptr(modelColor));
-
-        cube.Draw(shader.program, 
-            glm::vec3(0.0f, -3.0f, 0.0f),   // position
-            glm::vec3(0.0f),                // rotation
-            glm::vec3(20.0f, 0.1f, 20.0f),  // scale
-            glm::vec3(0.2f,0.2f,0.2f)       // color
-        ); 
-
-        cube.Draw(shader.program, 
-            glm::vec3(4.0f, -1.5f, 2.0f),
-            glm::vec3(0.0f),
-            glm::vec3(0.5f, 1.25f, 0.5f),
-            glm::vec3(0.8f,0.7f,0.4f)
-        ); 
-
-        wine.Draw(shader.program, 
-            glm::vec3(4.0f, -0.25f, 2.0f),
-            glm::vec3(-90.0f, 0.0f, 0.0f),
-            glm::vec3(0.06f, 0.06f, 0.06f),
-            glm::vec3(0.0f,0.5f,0.5f)
-        ); 
-
-        cube.Draw(shader.program, 
-            glm::vec3(4.0f, -1.5f, -2.0f),
-            glm::vec3(0.0f),
-            glm::vec3(0.5f, 1.25f, 0.5f),
-            glm::vec3(0.2f,0.2f,0.2f)
-        ); 
-
-        wine.Draw(shader.program, 
-            glm::vec3(4.0f, -0.25f, -2.0f),
-            glm::vec3(-90.0f, 0.0f, 0.0f),
-            glm::vec3(0.06f, 0.06f, 0.06f),
-            glm::vec3(1.0f,0.0f,0.0f)
-        );
+        scene.DrawModels();
+        scene.DrawLights();
 
         glfwSwapBuffers(window);
 
@@ -111,8 +65,7 @@ void Window::Loop() {
 }
 
 void Window::handleResizing(int width, int height) {
-    if (height == 0)
-        return;
+    if (height == 0) return;
             
     aspectRatio = (float)width / (float)height;
     glViewport(0, 0, width, height);
