@@ -239,8 +239,6 @@ void Model::Load(const std::string& path) {
             maxV.z = std::max(maxV.z, vertex.Position[2]);
         }
     }
-
-    baseBox = { minV, maxV };
 }
 
 void Model::Draw(GLuint program, glm::vec3 position, glm::vec3 rotation, glm::vec3 scale, glm::vec3 color) {

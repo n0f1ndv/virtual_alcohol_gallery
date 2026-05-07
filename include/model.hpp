@@ -51,8 +51,6 @@ public:
     void Load(const std::string& path);
     void Draw(GLuint program, glm::vec3 position, glm::vec3 rotation, glm::vec3 scale, glm::vec3 color);
 
-    BoundingBox baseBox;
-
 private:
     std::vector<Mesh> meshes;
     std::string directory;
