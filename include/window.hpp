@@ -1,5 +1,9 @@
 #pragma once
 
+#include "scene.hpp"
+#include "camera.hpp"
+#include "shader.hpp"
+
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
@@ -21,6 +25,10 @@ private:
     float windowLength;
     float aspectRatio;
     GLFWwindow* window;
+
+    Shader* shader;
+    Camera* camera;
+    Scene* scene;
 
     static void handleError(int error, const char* description);
     void handleResizing(int width, int height);

@@ -5,6 +5,7 @@
 #include <glm/gtc/type_ptr.hpp>
 
 #include <iostream>
+#include <cmath>
 
 Camera::Camera(GLFWwindow* window, GLuint program, glm::vec3 position) 
     : position(position)
@@ -28,16 +29,24 @@ void Camera::Update(float aspectRatio) {
     right = glm::normalize(glm::cross(flatFront, glm::vec3(0.0f, 1.0f, 0.0f)));
     velocity = (flatFront * speed_z) - (right * speed_y);
     
-    position += velocity * (float)glfwGetTime();
+    delta = (float)glfwGetTime();
+    totalTime += delta;
+
+    position += velocity * delta;
     glfwSetTime(0);
 
-    P = glm::perspective(glm::radians(50.0f), aspectRatio, 1.0f, 50.0f);
+    fov = glm::radians(50.0f) + ((std::sin(totalTime) + 1) / 2);
+
+    P = glm::perspective(fov, aspectRatio, 1.0f, 50.0f);
     V = glm::lookAt(position, position + front, glm::vec3(0.0f, 1.0f, 0.0f));
 
     glUniform3fv(glGetUniformLocation(program, "uViewPos"), 1, glm::value_ptr(position));
 
     glUniformMatrix4fv(glGetUniformLocation(program, "P"), 1, false, glm::value_ptr(P));
     glUniformMatrix4fv(glGetUniformLocation(program, "V"), 1, false, glm::value_ptr(V));
+
+    glUniform1f(glGetUniformLocation(program, "fTime"), totalTime);
+    glUniform1f(glGetUniformLocation(program, "vTime"), totalTime);
 }
 
 void Camera::keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods) {
@@ -55,7 +64,7 @@ void Camera::cursorPositionCallback(GLFWwindow* window, double xpos, double ypos
 }
 
 void Camera::handleKey(int key, int scancode, int action, int mods) {
-    std::cout << position.x << ", " << position.y << ", " << position.z << ", " << "\n";
+    // std::cout << position.x << ", " << position.y << ", " << position.z << ", " << "\n";
 
     if (glfwGetKey(window, GLFW_KEY_ENTER) == GLFW_PRESS) {
         glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);

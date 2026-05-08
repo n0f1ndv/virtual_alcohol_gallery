@@ -1,10 +1,6 @@
 #include "window.hpp"
-#include "camera.hpp"
 #include "model.hpp"
-#include "shader.hpp"
 #include "collision.hpp"
-#include "scene.hpp"
-
 
 Window::Window(float windowLength, float windowHeight, std::string windowTitle)
     : windowHeight{windowHeight}
@@ -27,6 +23,10 @@ Window::Window(float windowLength, float windowHeight, std::string windowTitle)
         glfwTerminate();
     }
 
+    shader = new Shader("shaders/fragmentDizzy.glsl", "shaders/vertexModel.glsl");
+    camera = new Camera(window, shader->program, glm::vec3(0.0f, 0.0f, -10.0f));
+    scene = new Scene(shader->program);
+
     glClearColor(1.000f, 0.780f, 0.918f, 1.0f);
     glEnable(GL_DEPTH_TEST);
 
@@ -42,21 +42,15 @@ Window::~Window() {
 }
 
 void Window::Loop() {
-    Shader shader("shaders/fragmentModel.glsl", "shaders/vertexModel.glsl");
-    
-    Camera camera(window, shader.program, glm::vec3(0.0f, 0.0f, -10.0f));
-
-    Scene scene(shader.program);
-
     while (!glfwWindowShouldClose(window)) {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        shader.Use();
+        shader->Use();
     
-        camera.Update(aspectRatio);
+        camera->Update(aspectRatio);
 
-        scene.DrawModels();
-        scene.DrawLights();
+        scene->DrawModels();
+        scene->DrawLights();
 
         glfwSwapBuffers(window);
 

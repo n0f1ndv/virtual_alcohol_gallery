@@ -39,7 +39,8 @@ private:
     glm::vec3 right;
     glm::vec3 velocity;
 
-    //pozycje startowe dla kamery oraz myszki
+    float fov;
+
     float yaw = -90.0f;
     float pitch = 0.0f;
     float lastX = 640.0f;
@@ -47,4 +48,7 @@ private:
     bool firstMouse = true;
 
     float speed = 8;
+
+    float totalTime = 0;
+    float delta = 0;
 };
