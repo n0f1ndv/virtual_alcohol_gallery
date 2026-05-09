@@ -75,7 +75,7 @@ std::string Shader::ReadFile(std::string path) {
         text = stream.str();
     }
     catch (std::ifstream::failure e) {
-        std::cout << "ERROR: Reading from file not successful\n";
+        std::cout << "ERROR: Reading from file: " << path << " not successful\n";
     }
 
     return text;

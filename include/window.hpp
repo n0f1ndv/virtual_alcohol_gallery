@@ -3,6 +3,7 @@
 #include "scene.hpp"
 #include "camera.hpp"
 #include "shader.hpp"
+#include "postProcessing.hpp"
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
@@ -12,7 +13,7 @@
 
 class Window {
 public:
-    Window(float windowHeight, float windowLength, std::string windowTitle);
+    Window(float windowHeight, float windowWidth, std::string windowTitle);
     ~Window();
 
     void Loop();
@@ -22,11 +23,13 @@ public:
 
 private:
     float windowHeight;
-    float windowLength;
+    float windowWidth;
     float aspectRatio;
     GLFWwindow* window;
 
     Shader* shader;
+    Shader* ppShader;
+    PostProcessing* postProcessing;
     Camera* camera;
     Scene* scene;
 
