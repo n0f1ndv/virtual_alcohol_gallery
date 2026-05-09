@@ -28,7 +28,17 @@ vec4 fluctuateColors(vec3 color) {
 
 void main()
 { 
-    vec3 color = texture(screenTexture, TexCoords).rgb;
+    vec2 centre = vec2(0.5);
+    vec2 dir = centre - TexCoords;
+    
+    float d = length(dir);
+    dir = normalize(dir);
+
+    float e = 2.718;
+    float func = pow(log(time), sin(time)) * e;
+    d *= 1. - smoothstep(0.0, func, abs(d));
+
+    vec3 color = texture(screenTexture, TexCoords).rgb; //  TexCoords + dir * d
 
     // Uncomment only one at a time
     // gl_FragColor = negative(color);
