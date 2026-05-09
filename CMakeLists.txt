@@ -14,6 +14,7 @@ set(SOURCES
     src/window.cpp
     src/collision.cpp
     src/scene.cpp
+    src/postProcessing.cpp
 )
 
 add_executable(app ${SOURCES})
