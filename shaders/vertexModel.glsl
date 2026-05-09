@@ -16,12 +16,6 @@ out vec3 vWorldPos;
 void main() {
     vec4 world = M * vec4(aPos, 1.0);
 
-    float strength = 0.5;
-    float speed = 1.0;
-        
-    world.x += sin(vTime * speed + world.y) * strength;
-    world.z += cos(vTime * speed * 0.8 + world.y) * strength;
-
     vWorldPos = world.xyz;
     vNormal = mat3(transpose(inverse(M))) * aNormal;
     vTex = aTex;

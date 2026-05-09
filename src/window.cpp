@@ -23,7 +23,7 @@ Window::Window(float windowLength, float windowHeight, std::string windowTitle)
         glfwTerminate();
     }
 
-    shader = new Shader("shaders/fragmentSandbox.glsl", "shaders/vertexBasic.glsl");
+    shader = new Shader("shaders/fragmentModel.glsl", "shaders/vertexModel.glsl");
     camera = new Camera(window, shader->program, glm::vec3(0.0f, 0.0f, -10.0f));
     scene = new Scene(shader->program);
 
