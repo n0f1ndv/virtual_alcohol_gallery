@@ -121,5 +121,5 @@ void Camera::handleMouse(double xpos, double ypos) {
 }
 
 inline float fluctuateFOV(float base, float time) {
-    return glm::radians(base) + ((std::sin(totalTime) + 1) / 2);
+    return glm::radians(base) + ((std::sin(time) + 1) / 2);
 }
