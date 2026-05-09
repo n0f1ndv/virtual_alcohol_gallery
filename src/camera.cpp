@@ -35,9 +35,7 @@ void Camera::Update(float aspectRatio) {
     position += velocity * delta;
     glfwSetTime(0);
 
-    fov = glm::radians(50.0f) + ((std::sin(totalTime) + 1) / 2);
-
-    P = glm::perspective(fov, aspectRatio, 1.0f, 50.0f);
+    P = glm::perspective(glm::radians(50.0f), aspectRatio, 1.0f, 50.0f);
     V = glm::lookAt(position, position + front, glm::vec3(0.0f, 1.0f, 0.0f));
 
     glUniform3fv(glGetUniformLocation(program, "uViewPos"), 1, glm::value_ptr(position));
@@ -120,4 +118,8 @@ void Camera::handleMouse(double xpos, double ypos) {
     Mc = glm::rotate(Mc, glm::radians(pitch), glm::vec3(1.0f, 0.0f, 0.0f));
     glm::vec4 dir_ = Mc * glm::vec4(0.0f, 0.0f, -1.0f, 0.0f);
     front = glm::normalize(glm::vec3(dir_));
+}
+
+inline float fluctuateFOV(float base, float time) {
+    return glm::radians(base) + ((std::sin(totalTime) + 1) / 2);
 }

@@ -28,6 +28,8 @@ private:
     void handleKey(int key, int scancode, int action, int mods);
     void handleMouse(double xpos, double ypos);
     
+    inline float fluctuateFOV(float base, float time);
+
     GLFWwindow* window;
     GLuint program;
 

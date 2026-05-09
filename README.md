@@ -9,7 +9,6 @@ List of features left to implement:
  - Various visual effects caused by drinking alcohol;
  - Picking up bottles (ray-casting);
  - Animation of drinking;
- - Loading textures.
 
 ## Installation & Compilation
 
