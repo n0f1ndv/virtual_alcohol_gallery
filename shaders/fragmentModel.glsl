@@ -4,7 +4,7 @@ in vec3 vNormal;
 in vec2 vTex;
 in vec3 vWorldPos;
 
-uniform float fTime;
+uniform float time;
 uniform vec3 uLightPos;
 uniform vec3 uViewPos;
 uniform sampler2D uTexture;

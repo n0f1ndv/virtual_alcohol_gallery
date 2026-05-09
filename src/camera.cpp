@@ -43,8 +43,7 @@ void Camera::Update(float aspectRatio) {
     glUniformMatrix4fv(glGetUniformLocation(program, "P"), 1, false, glm::value_ptr(P));
     glUniformMatrix4fv(glGetUniformLocation(program, "V"), 1, false, glm::value_ptr(V));
 
-    glUniform1f(glGetUniformLocation(program, "fTime"), totalTime);
-    glUniform1f(glGetUniformLocation(program, "vTime"), totalTime);
+    glUniform1f(glGetUniformLocation(program, "time"), totalTime);
 }
 
 void Camera::keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods) {
