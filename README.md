@@ -4,6 +4,9 @@
   Virtual Alcohol Gallery is a simple visualization project using c++ and opengl.
   
 ## TODO
+There's a funny bug:  when window is created it has certain size but when it is updated class member is not changed and postprocessing class also is required to keep track of size but it get segmentation fault when I try to fix it.
+Everything is fine as long as you don't change screen size. Damn, we need to fix this.
+
 List of features left to implement:
  - Fractals;
  - Various visual effects caused by drinking alcohol;

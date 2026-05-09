@@ -65,8 +65,9 @@ void Window::Loop() {
 
 void Window::handleResizing(int width, int height) {
     if (height == 0) return;
-            
+
     aspectRatio = (float)width / (float)height;
+
     glViewport(0, 0, width, height);
 }
 

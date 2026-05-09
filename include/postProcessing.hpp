@@ -2,9 +2,13 @@
 
 class PostProcessing {
 public:
-    PostProcessing(int width, int height);
+    float width;
+    float height;
+
+    PostProcessing(float width, float height);
     ~PostProcessing();
 
+    void Setup(float updatedWidth, float updatedHeight);
     void Bind();
     void BindDefault();
     void Draw();
@@ -12,6 +16,4 @@ public:
 private:
     unsigned int VAO, VBO, FBO, RBO;
     unsigned int texture;
-    int width;
-    int height;
 };
