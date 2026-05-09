@@ -20,7 +20,7 @@ Camera::Camera(GLFWwindow* window, GLuint program, glm::vec3 position)
 
 Camera::~Camera() {}
 
-void Camera::Update(float aspectRatio) {
+void Camera::Update(float aspectRatio, float frameTime) {
     if (fly) 
         flatFront = glm::normalize(glm::vec3(front.x, 0.0f, front.z));
     else
@@ -28,11 +28,8 @@ void Camera::Update(float aspectRatio) {
     
     right = glm::normalize(glm::cross(flatFront, glm::vec3(0.0f, 1.0f, 0.0f)));
     velocity = (flatFront * speed_z) - (right * speed_y);
-    
-    delta = (float)glfwGetTime();
-    totalTime += delta;
 
-    position += velocity * delta;
+    position += velocity * frameTime;
     glfwSetTime(0);
 
     P = glm::perspective(glm::radians(50.0f), aspectRatio, 1.0f, 50.0f);
@@ -42,8 +39,6 @@ void Camera::Update(float aspectRatio) {
 
     glUniformMatrix4fv(glGetUniformLocation(program, "P"), 1, false, glm::value_ptr(P));
     glUniformMatrix4fv(glGetUniformLocation(program, "V"), 1, false, glm::value_ptr(V));
-
-    glUniform1f(glGetUniformLocation(program, "time"), totalTime);
 }
 
 void Camera::keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods) {

@@ -42,11 +42,13 @@ Window::~Window() {
 
 void Window::Loop() {
     while (!glfwWindowShouldClose(window)) {
+        Clock();
+
         postProcessing->Bind();
 
         shader->Use();
     
-        camera->Update(aspectRatio);
+        camera->Update(aspectRatio, frameTime);
 
         scene->DrawModels();
         scene->DrawLights();
@@ -61,6 +63,16 @@ void Window::Loop() {
 
         glfwPollEvents();
     }
+}
+
+void Window::Clock() {
+    frameTime = (float)glfwGetTime();
+
+    totalTime += frameTime;
+    delta = frameTime - lastTime;
+    lastTime = frameTime;
+
+    glUniform1f(glGetUniformLocation(ppShader->program, "time"), totalTime);
 }
 
 void Window::handleResizing(int width, int height) {

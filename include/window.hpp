@@ -25,6 +25,12 @@ private:
     float windowHeight;
     float windowWidth;
     float aspectRatio;
+
+    float delta;
+    float totalTime;
+    float frameTime;
+    float lastTime;
+
     GLFWwindow* window;
 
     Shader* shader;
@@ -32,6 +38,8 @@ private:
     PostProcessing* postProcessing;
     Camera* camera;
     Scene* scene;
+
+    void Clock();
 
     static void handleError(int error, const char* description);
     void handleResizing(int width, int height);
