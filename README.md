@@ -8,7 +8,6 @@ There's a funny bug:  when window is created it has certain size but when it is 
 Everything is fine as long as you don't change screen size. Damn, we need to fix this.
 
 List of features left to implement:
- - Fractals;
  - Various visual effects caused by drinking alcohol;
  - Picking up bottles (ray-casting);
  - Animation of drinking;
