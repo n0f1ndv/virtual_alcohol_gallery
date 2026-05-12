@@ -2,15 +2,15 @@
 #include "model.hpp"
 #include "collision.hpp"
 
-Window::Window(float windowLength, float windowHeight, std::string windowTitle)
+Window::Window(float windowWidth, float windowHeight, std::string windowTitle)
     : windowHeight{windowHeight}
-    , windowLength{windowLength}
-    , aspectRatio{windowLength / windowHeight} {
+    , windowWidth{windowWidth}
+    , aspectRatio{windowWidth / windowHeight} {
     if (!glfwInit()) {
         std::cerr << "ERROR: Failed to initialize GLFW\n";
     }
 
-    window = glfwCreateWindow(windowLength, windowHeight, windowTitle.c_str(), NULL, NULL);
+    window = glfwCreateWindow(windowWidth, windowHeight, windowTitle.c_str(), NULL, NULL);
     if (!window) {
         std::cerr << "ERROR: Failed to create window\n";
 
@@ -24,14 +24,13 @@ Window::Window(float windowLength, float windowHeight, std::string windowTitle)
     }
 
     shader = new Shader("shaders/fragmentModel.glsl", "shaders/vertexModel.glsl");
+    ppShader = new Shader("shaders/fragmentPP.glsl", "shaders/vertexPP.glsl");
+    postProcessing = new PostProcessing(windowWidth, windowHeight);
     camera = new Camera(window, shader->program, glm::vec3(0.0f, 0.0f, -10.0f));
     scene = new Scene(shader->program);
 
-    glClearColor(1.000f, 0.780f, 0.918f, 1.0f);
-    glEnable(GL_DEPTH_TEST);
-
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-    glfwSetCursorPos(window, windowLength / 2, windowHeight / 2);
+    glfwSetCursorPos(window, windowWidth / 2, windowHeight / 2);
 
     glfwSetWindowSizeCallback(window, Window::windowResizeCallback);
     glfwSetErrorCallback(Window::errorCallback);
@@ -43,14 +42,22 @@ Window::~Window() {
 
 void Window::Loop() {
     while (!glfwWindowShouldClose(window)) {
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        Clock();
+
+        postProcessing->Bind();
 
         shader->Use();
     
-        camera->Update(aspectRatio);
+        camera->Update(aspectRatio, frameTime);
 
         scene->DrawModels();
         scene->DrawLights();
+
+        postProcessing->BindDefault();
+
+        ppShader->Use();
+
+        postProcessing->Draw();
 
         glfwSwapBuffers(window);
 
@@ -58,10 +65,21 @@ void Window::Loop() {
     }
 }
 
+void Window::Clock() {
+    frameTime = (float)glfwGetTime();
+
+    totalTime += frameTime;
+    delta = frameTime - lastTime;
+    lastTime = frameTime;
+
+    glUniform1f(glGetUniformLocation(ppShader->program, "time"), totalTime);
+}
+
 void Window::handleResizing(int width, int height) {
     if (height == 0) return;
-            
+
     aspectRatio = (float)width / (float)height;
+
     glViewport(0, 0, width, height);
 }
 
