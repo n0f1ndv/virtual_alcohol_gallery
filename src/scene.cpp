@@ -50,9 +50,20 @@ Scene::Scene(GLuint program) : program{program} {
     for (int j = 0; j <= 4; j++) {
         for (int i = 0; i <= 9; i++) {
             
-            entities.push_back(Entity(&models[0], glm::vec3(-20.0f + (i * 5), -1.5f, -20.0f + (j * 10)), glm::vec3(0.0f), glm::vec3(0.5f, 1.25f, 0.5f), glm::vec3(0.8f, 0.7f, 0.4f), false));
+            entities.push_back(Entity(&models[0], 
+                glm::vec3(-20.0f + (i * 5), -1.5f, -20.0f + (j * 10)), 
+                glm::vec3(0.0f), glm::vec3(0.5f, 1.25f, 0.5f), 
+                glm::vec3(0.8f, 0.7f, 0.4f), 
+                false,
+                "stand"));
 
-            Entity wine(&models[1], glm::vec3(-20.0f + (i * 5), -0.25f, -20.0f + (j * 10)), glm::vec3(-90.0f, 0.0f, 0.0f), glm::vec3(0.06f, 0.06f, 0.06f), glm::vec3(0.0f, 0.5f, 0.5f), true, "wine_bottle");
+            Entity wine(&models[1], 
+                glm::vec3(-20.0f + (i * 5), -0.25f, -20.0f + (j * 10)), 
+                glm::vec3(-90.0f, 0.0f, 0.0f), glm::vec3(0.06f, 0.06f, 0.06f), 
+                glm::vec3(0.0f, 0.5f, 0.5f), 
+                true, 
+                "wine_bottle");
+
             wine.SetHitboxLimits(glm::vec3(-0.5f, -0.5f, -0.5f), glm::vec3(0.5f, 1.0f, 0.5f));
             
             entities.push_back(wine);
