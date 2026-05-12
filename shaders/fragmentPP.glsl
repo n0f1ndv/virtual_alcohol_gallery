@@ -26,6 +26,25 @@ vec4 fluctuateColors(vec3 color) {
     return vec4(sin(color.b * time), 0.0, cos(color.r * time), 1.0);
 }
 
+float fractal(vec2 uv, vec3 sceneColor) {
+    vec2 c = (uv - 0.5) * 2.0; 
+    
+    vec2 z = c; 
+    vec2 juliaConstant = vec2(sin(time * 0.5) * 0.4, cos(time * 0.3) * 0.4);
+    
+    int iterations = 0;
+    const int maxIterations = 32;
+
+    for (int i = 0; i < maxIterations; i++) {
+        z = vec2(z.x * z.x - z.y * z.y, 2.0 * z.x * z.y) + juliaConstant;
+
+        if (length(z) > 3.0) break;
+        iterations++;
+    }
+    
+    return float(iterations) / float(maxIterations);
+}
+
 void main()
 { 
     vec2 centre = vec2(0.5);
@@ -40,7 +59,10 @@ void main()
 
     vec3 color = texture(screenTexture, TexCoords).rgb; //  TexCoords + dir * d
 
-    // Uncomment only one at a time
+    // If you want to be high af uncomment line below:
+    // color = texture(screenTexture, TexCoords + fractal(TexCoords, color) + dir * d).rgb;
+
+    // Uncomment only one at a time:
     // gl_FragColor = negative(color);
     // gl_FragColor = grayscale(color);
     // gl_FragColor = blink(2.5, color);
