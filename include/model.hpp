@@ -50,7 +50,8 @@ public:
 
     void Load(const std::string& path);
     void Draw(GLuint program, glm::vec3 position, glm::vec3 rotation, glm::vec3 scale, glm::vec3 color);
-
+    void DrawMatrix(GLuint program, glm::mat4 modelMatrix, glm::vec3 color);
+    
 private:
     std::vector<Mesh> meshes;
     std::string directory;

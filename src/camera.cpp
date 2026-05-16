@@ -31,8 +31,9 @@ void Camera::Update(float aspectRatio, float frameTime) {
 
     position += velocity * frameTime;
     glfwSetTime(0);
-
-    P = glm::perspective(glm::radians(50.0f), aspectRatio, 1.0f, 50.0f);
+    
+    //zmniejszyłem do 0.2 zeby ciezej było zagladać do obiektów
+    P = glm::perspective(glm::radians(50.0f), aspectRatio, 0.2f, 50.0f);
     V = glm::lookAt(position, position + front, glm::vec3(0.0f, 1.0f, 0.0f));
 
     glUniform3fv(glGetUniformLocation(program, "uViewPos"), 1, glm::value_ptr(position));

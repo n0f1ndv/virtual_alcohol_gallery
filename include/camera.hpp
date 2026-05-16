@@ -24,6 +24,10 @@ public:
     static void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
     static void cursorPositionCallback(GLFWwindow* window, double xpos, double ypos);
 
+    const glm::mat4& GetV() const { 
+        return V; 
+    }
+    
 private:
     void handleKey(int key, int scancode, int action, int mods);
     void handleMouse(double xpos, double ypos);

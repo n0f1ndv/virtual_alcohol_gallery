@@ -54,13 +54,19 @@ void Window::Loop() {
         postProcessing->Bind();
 
         shader->Use();
-    
-        camera->Update(aspectRatio, frameTime);
 
         //interakcje
         interaction->Update(window, camera, scene, frameTime);
 
+        if (interaction->IsMovementBlocked()) {
+            camera->Update(aspectRatio, 0.0f); 
+        } else {
+            camera->Update(aspectRatio, frameTime); 
+        }
+
         scene->DrawModels();
+        interaction->DrawHand(shader->program, scene, camera);
+
         scene->DrawLights();
 
         postProcessing->BindDefault();

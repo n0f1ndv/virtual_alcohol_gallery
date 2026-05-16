@@ -36,6 +36,10 @@ public:
     BoundingBox GetHitbox() const;
 
     void Draw(GLuint program);
+
+    Model* GetModel() const {
+        return model;
+    }
 };
 
 class Scene {
@@ -49,11 +53,13 @@ public:
     //wektor przechowujacy obiekty
     std::vector<Entity> entities;
 
+    // TODO: Fix manageing models and lights BECUASE THIS SUCKS
+    //przeniosłem do public bo potrzebowałem do animacji
+    Model models[3];
+
 private:
     GLuint program;
 
-    // TODO: Fix manageing models and lights BECUASE THIS SUCKS
-    Model models[2];
 
     glm::vec3 modelColor = glm::vec3(0.792f, 0.929f, 1.000f);
     glm::vec3 lightPosition = glm::vec3(2.0f, 2.0f, -4.0f);
