@@ -92,9 +92,9 @@ void InteractionSystem::Update(GLFWwindow* window, Camera* camera, Scene* scene,
                 glm::vec3 flatFront = glm::normalize(glm::vec3(camera->front.x, 0.0f, camera->front.z));
                 glm::vec3 flatRight = glm::normalize(glm::cross(flatFront, glm::vec3(0.0f, 1.0f, 0.0f)));
                 glm::vec3 dropPos = camera->position - (flatFront * 1.0f) + (flatRight * 0.2f);
-                dropPos.y = -2.7f; 
+                dropPos.y = -1.7f; 
                 float randomYRotation = static_cast<float>(rand() % 360);
-                glm::vec3 lyingRotation = glm::vec3(0.0f, randomYRotation, 0.0f);
+                glm::vec3 lyingRotation = glm::vec3(90.0f, randomYRotation, 0.0f);
 
                 if (isSmoking) {
                     scene->entities.push_back(Entity(
@@ -285,7 +285,7 @@ void InteractionSystem::DrawHand(GLuint program, Scene* scene, Camera* camera) {
             bottleMatrix = glm::translate(bottleMatrix, glm::vec3(0.0f, -0.2f, -0.5f)); 
         }
 
-        glm::vec3 itemScale = isSmoking ? glm::vec3(0.02f) : glm::vec3(0.06f);
+        glm::vec3 itemScale = isSmoking ? glm::vec3(0.02f) : glm::vec3(0.075f);
         bottleMatrix = glm::scale(bottleMatrix, itemScale);
 
         if (isSmoking) {

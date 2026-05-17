@@ -47,11 +47,12 @@ Scene::Scene(GLuint program) : program{program} {
 
     // Floor     
     entities.push_back(Entity(&models[0], 
-        glm::vec3(0.0f, -3.0f, 0.0f),   //position
-        glm::vec3(0.0f),                //rotation
-        glm::vec3(30.0f, 0.1f, 30.0f),  //scale
-        glm::vec3(0.2f, 0.2f, 0.2f),    //color
-        false));                        //canInteract
+        glm::vec3(0.0f, -2.0f, 0.0f),           //position
+        glm::vec3(0.0f),                        //rotation
+        glm::vec3(30.0f, 0.1f, 30.0f),          //scale
+        glm::vec3(0.192f, 0.196f, 0.267f),      //color
+        false                                   //canInteract
+    ));
 
     entities.push_back(Entity(
         &models[3],
