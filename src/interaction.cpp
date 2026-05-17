@@ -239,7 +239,6 @@ void InteractionSystem::DrawHand(GLuint program, Scene* scene, Camera* camera) {
     baseRot[1] = glm::vec4(yAxis, 0.0f);
     baseRot[2] = glm::vec4(zAxis, 0.0f);
 
-    // Zastosowanie Twojego eleganckiego odchylenia łokcia!
     baseRot = glm::rotate(baseRot, glm::radians(armTwist), glm::vec3(0.0f, 0.0f, 1.0f));
 
     // A. RAMIĘ
