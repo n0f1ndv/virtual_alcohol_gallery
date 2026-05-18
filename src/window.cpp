@@ -34,7 +34,7 @@ Window::Window(float windowWidth, float windowHeight, std::string windowTitle)
     scene = new Scene(shader->program);
     
     //interakcje
-    interaction = new InteractionSystem();
+    interaction = new InteractionSystem(ppShader->program, shader->program);
 
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
     glfwSetCursorPos(window, windowWidth / 2, windowHeight / 2);
@@ -65,7 +65,7 @@ void Window::Loop() {
         }
 
         scene->DrawModels();
-        interaction->DrawHand(shader->program, scene, camera);
+        interaction->DrawHand(scene, camera);
 
         scene->DrawLights();
 

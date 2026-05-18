@@ -4,7 +4,9 @@
 #include <algorithm>
 #include <cmath>
 
-InteractionSystem::InteractionSystem() {}
+InteractionSystem::InteractionSystem(GLuint ppProgram, GLuint program)
+    : ppProgram{ppProgram}
+    , program{program} {}
 
 bool InteractionSystem::RayIntersectsAABB(glm::vec3 rayOrigin, glm::vec3 rayDir, BoundingBox box, float& dist) {
     glm::vec3 invDir = 1.0f / (rayDir + glm::vec3(0.00001f));
@@ -121,12 +123,15 @@ void InteractionSystem::Update(GLFWwindow* window, Camera* camera, Scene* scene,
                 }
 
                 targetItem = nullptr;
+
+                glUseProgram(ppProgram);
+                glUniform1i(glGetUniformLocation(ppProgram, "drunk"), 1);
             }
         }
     }
 }
 
-void InteractionSystem::DrawHand(GLuint program, Scene* scene, Camera* camera) {
+void InteractionSystem::DrawHand(Scene* scene, Camera* camera) {
     if (state == HandState::IDLE) return;
 
     float t = glm::clamp(animTimer / duration, 0.0f, 1.0f);

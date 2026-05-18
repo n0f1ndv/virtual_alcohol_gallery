@@ -25,10 +25,10 @@ public:
     float L2 = 1.0f;
     float armThickness = 0.15f;
 
-    InteractionSystem();
+    InteractionSystem(GLuint ppProgram, GLuint program);
     
     void Update(GLFWwindow* window, Camera* camera, Scene* scene, float deltaTime);
-    void DrawHand(GLuint program, Scene* scene, Camera* camera);
+    void DrawHand(Scene* scene, Camera* camera);
     
     bool IsMovementBlocked() const { 
         return state == HandState::REACHING_OUT || (state == HandState::RETRACTING && isSmoking == false); 
@@ -40,5 +40,8 @@ private:
     bool isInteractPressed = false;
     bool isSmoking = false;
     
+    GLuint ppProgram;
+    GLuint program;
+
     bool RayIntersectsAABB(glm::vec3 rayOrigin, glm::vec3 rayDir, BoundingBox box, float& dist);
 };

@@ -4,8 +4,9 @@ in vec2 TexCoords;
 
 uniform sampler2D screenTexture;
 uniform float time;
+uniform int drunk;
 
-// TODO: I think I didn't set screenTexture but for some reason it works ;0;
+// TODO: Fix this shader, quickly!
 vec4 blink(float strength, vec3 color) {
     float coeff = (sin(strength * time) + 1) / 2; 
 
@@ -60,12 +61,9 @@ void main()
     vec3 color = texture(screenTexture, TexCoords).rgb; //  TexCoords + dir * d
 
     // If you want to be high af uncomment line below:
-    // color = texture(screenTexture, TexCoords + fractal(TexCoords, color) + dir * d).rgb;
+    if (drunk == 1) {
+       color = texture(screenTexture, TexCoords + fractal(TexCoords, color) + dir * d).rgb;
+    }
 
-    // Uncomment only one at a time:
-    // gl_FragColor = negative(color);
-    // gl_FragColor = grayscale(color);
-    // gl_FragColor = blink(2.5, color);
-    // gl_FragColor = fluctuateColors(color);
     gl_FragColor = vec4(color, 1.0);
 }
