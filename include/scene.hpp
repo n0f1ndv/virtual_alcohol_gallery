@@ -60,7 +60,6 @@ public:
 private:
     GLuint program;
 
-
-    glm::vec3 modelColor = glm::vec3(0.792f, 0.929f, 1.000f);
-    glm::vec3 lightPosition = glm::vec3(2.0f, 2.0f, -4.0f);
+    glm::vec3 modelColor = glm::vec3(0.0f, 0.0f, 0.0f);
+    glm::vec3 lightPosition = glm::vec3(2.0f, 30.0f, -4.0f);
 };

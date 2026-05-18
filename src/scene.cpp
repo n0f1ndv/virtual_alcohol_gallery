@@ -38,72 +38,48 @@ Scene::Scene(GLuint program) : program{program} {
     models[0].Load("models/cube.obj");
     models[1].Load("models/wine_no_tx.obj");
     models[2].Load("models/cigarette.obj");
-    models[3].Load("models/tree.obj");
-    models[4].Load("models/stand.obj");
-    models[5].Load("models/bottle1.obj");
-    models[6].Load("models/bottle2.obj");
-
+    
     glm::vec3 wine_color;
 
     // Floor     
     entities.push_back(Entity(&models[0], 
-        glm::vec3(0.0f, -2.0f, 0.0f),           //position
-        glm::vec3(0.0f),                        //rotation
-        glm::vec3(30.0f, 0.1f, 30.0f),          //scale
-        glm::vec3(0.192f, 0.196f, 0.267f),      //color
-        false                                   //canInteract
-    ));
-
-    entities.push_back(Entity(
-        &models[3],
-        glm::vec3(0.0f, -3.0f, 0.0f),
-        glm::vec3(0.0f),
-        glm::vec3(1.0f),
-        glm::vec3(0.2f, 0.2f, 0.2f),
-        false
-    ));
+        glm::vec3(0.0f, -3.0f, 0.0f),   //position
+        glm::vec3(0.0f),                //rotation
+        glm::vec3(30.0f, 0.1f, 30.0f),  //scale
+        glm::vec3(0.2f, 0.2f, 0.2f),    //color
+        false));                        //canInteract
 
     // Bottles on stands
     for (int j = 0; j <= 4; j++) {
         for (int i = 0; i <= 9; i++) {
-             
-            if (i % 2 == 1) {
-                Entity wine(
-                    &models[5], 
-                    glm::vec3(-20.0f + (i * 5), -0.1f, -20.0f + (j * 10)), 
-                    glm::vec3(0.0f, 0.0f, 0.0f), 
-                    glm::vec3(0.075f), 
-                    wine_color, 
-                    true, 
-                    "wine_bottle"
-                );
-
-                wine.SetHitboxLimits(glm::vec3(-0.5f, -0.5f, -0.5f), glm::vec3(0.5f, 1.0f, 0.5f));
-                entities.push_back(wine);
+            
+            if(i%2==1){
+                wine_color = glm::vec3(0.0f, 0.5f, 0.5f);
             }
-            else {
-                Entity wine(
-                    &models[6], 
-                    glm::vec3(-20.0f + (i * 5), -0.2f, -20.0f + (j * 10)), 
-                    glm::vec3(0.0f, 0.0f, 0.0f), 
-                    glm::vec3(0.15f), 
-                    wine_color, 
-                    true, 
-                    "wine_bottle"
-                );
-
-                wine.SetHitboxLimits(glm::vec3(-0.5f, -0.5f, -0.5f), glm::vec3(0.5f, 1.0f, 0.5f));
-                entities.push_back(wine);
+            else{
+                wine_color = glm::vec3(0.8f, 0.5f, 0.5f);
             }
 
-            entities.push_back(Entity(&models[4], 
+            entities.push_back(Entity(&models[0], 
                 glm::vec3(-20.0f + (i * 5), -1.5f, -20.0f + (j * 10)), 
                 glm::vec3(0.0f), 
-                glm::vec3(0.6f, 0.6f, 0.6f), 
+                glm::vec3(0.5f, 1.25f, 0.5f), 
                 glm::vec3(0.8f, 0.7f, 0.4f), 
                 false,
-                "stand"
-            ));
+                "stand"));
+            
+            
+            Entity wine(&models[1], 
+                glm::vec3(-20.0f + (i * 5), -0.25f, -20.0f + (j * 10)), 
+                glm::vec3(-90.0f, 0.0f, 0.0f), 
+                glm::vec3(0.06f, 0.06f, 0.06f), 
+                wine_color, 
+                true, 
+                "wine_bottle");
+
+            wine.SetHitboxLimits(glm::vec3(-0.5f, -0.5f, -0.5f), glm::vec3(0.5f, 1.0f, 0.5f));
+            
+            entities.push_back(wine);
         }
     }
 }
