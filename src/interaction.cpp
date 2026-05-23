@@ -124,8 +124,10 @@ void InteractionSystem::Update(GLFWwindow* window, Camera* camera, Scene* scene,
 
                 targetItem = nullptr;
 
+                drunknessEffect++;
+
                 glUseProgram(ppProgram);
-                glUniform1i(glGetUniformLocation(ppProgram, "drunk"), 1);
+                glUniform1i(glGetUniformLocation(ppProgram, "drunk"), drunknessEffect);
             }
         }
     }

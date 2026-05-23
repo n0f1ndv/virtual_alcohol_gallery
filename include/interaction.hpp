@@ -43,5 +43,7 @@ private:
     GLuint ppProgram;
     GLuint program;
 
+    int drunknessEffect = 0;
+
     bool RayIntersectsAABB(glm::vec3 rayOrigin, glm::vec3 rayDir, BoundingBox box, float& dist);
 };
