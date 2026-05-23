@@ -1,10 +1,7 @@
 #include "window.hpp"
 #include "model.hpp"
 #include "collision.hpp"
-#include "interaction.hpp"
 
-//nowe - do interakcji
-InteractionSystem* interaction;
 
 Window::Window(float windowWidth, float windowHeight, std::string windowTitle)
     : windowHeight{windowHeight}

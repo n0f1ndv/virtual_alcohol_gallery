@@ -26,6 +26,7 @@ public:
     float armThickness = 0.15f;
 
     InteractionSystem(GLuint ppProgram, GLuint program);
+    ~InteractionSystem();
     
     void Update(GLFWwindow* window, Camera* camera, Scene* scene, float deltaTime);
     void DrawHand(Scene* scene, Camera* camera);

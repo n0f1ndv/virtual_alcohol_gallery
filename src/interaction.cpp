@@ -8,6 +8,8 @@ InteractionSystem::InteractionSystem(GLuint ppProgram, GLuint program)
     : ppProgram{ppProgram}
     , program{program} {}
 
+InteractionSystem::~InteractionSystem() {}
+
 bool InteractionSystem::RayIntersectsAABB(glm::vec3 rayOrigin, glm::vec3 rayDir, BoundingBox box, float& dist) {
     glm::vec3 invDir = 1.0f / (rayDir + glm::vec3(0.00001f));
     glm::vec3 tMin = (box.min - rayOrigin) * invDir;

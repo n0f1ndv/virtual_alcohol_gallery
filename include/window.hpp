@@ -3,6 +3,7 @@
 #include "scene.hpp"
 #include "camera.hpp"
 #include "shader.hpp"
+#include "interaction.hpp"
 #include "postProcessing.hpp"
 
 #include <GL/glew.h>
@@ -38,6 +39,7 @@ private:
     PostProcessing* postProcessing;
     Camera* camera;
     Scene* scene;
+    InteractionSystem* interaction;
 
     void Clock();
 
