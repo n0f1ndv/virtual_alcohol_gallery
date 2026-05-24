@@ -7,13 +7,12 @@
 #include <vector>
 #include <string>
 
-//do przeniesienia
 class BoundingBox {
     public:
         glm::vec3 min;
         glm::vec3 max;
 };
-//klasa na kazdy obiekt mowiaca np. czy moze wejsc w interakcje
+
 class Entity {
 private:
     Model* model;
@@ -53,8 +52,6 @@ public:
     //wektor przechowujacy obiekty
     std::vector<Entity> entities;
 
-    // TODO: Fix manageing models and lights BECUASE THIS SUCKS
-    //przeniosłem do public bo potrzebowałem do animacji
     Model models[5];
 
 private:

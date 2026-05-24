@@ -54,7 +54,7 @@ void InteractionSystem::Update(GLFWwindow* window, Camera* camera, Scene* scene,
                 animTimer = 0.0f;
             }
         }
-        // --- WYCIĄGANIE PAPIEROSA POD KLAWISZEM 'C' ---
+
         if (glfwGetKey(window, GLFW_KEY_C) == GLFW_PRESS && !isInteractPressed) {
             isInteractPressed = true;
             isSmoking = true;
@@ -74,7 +74,6 @@ void InteractionSystem::Update(GLFWwindow* window, Camera* camera, Scene* scene,
         }
     } 
     else {
-        // --- PRZEJŚCIA MIĘDZY PIĘCIOMA STANAMI ---
         animTimer += deltaTime;
         if (animTimer >= duration) {
             if (state == HandState::REACHING_OUT) {

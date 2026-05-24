@@ -6,7 +6,6 @@ uniform sampler2D screenTexture;
 uniform float time;
 uniform int drunk;
 
-// TODO: Fix this shader, quickly!
 vec3 blink(float strength, vec3 color) {
     float coeff = (sin(strength * time) + 1) / 2; 
 

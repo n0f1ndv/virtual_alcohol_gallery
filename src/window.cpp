@@ -29,8 +29,6 @@ Window::Window(float windowWidth, float windowHeight, std::string windowTitle)
     postProcessing = new PostProcessing(windowWidth, windowHeight);
     camera = new Camera(window, shader->program, glm::vec3(0.0f, 0.0f, -10.0f));
     scene = new Scene(shader->program);
-    
-    //interakcje
     interaction = new InteractionSystem(ppShader->program, shader->program);
 
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
@@ -52,7 +50,6 @@ void Window::Loop() {
 
         shader->Use();
 
-        //interakcje
         interaction->Update(window, camera, scene, frameTime);
 
         if (interaction->IsMovementBlocked()) {

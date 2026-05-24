@@ -11,7 +11,6 @@ public:
     glm::vec3 position;
     glm::vec3 front = glm::vec3(0.0f, 0.0f, 10.0f); 
 
-    //zmienne do ruchu
     float speed_y = 0.0f;
     float speed_z = 0.0f;
     bool fly = true;

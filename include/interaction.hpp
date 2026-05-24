@@ -6,7 +6,6 @@
 #include "camera.hpp"
 #include "scene.hpp"
 
-// Pięć stanów pełnego cyklu interakcji
 enum class HandState {
     IDLE,           
     REACHING_OUT,   // Sięganie po butelkę na stole
