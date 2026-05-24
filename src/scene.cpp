@@ -36,13 +36,13 @@ void Entity::Draw(GLuint program) {
 Scene::Scene(GLuint program) : program{program} {
     
     models[0].Load("models/cube.obj");
-    models[1].Load("models/wine_no_tx.obj");
+    models[1].Load("models/wine.obj");
     models[2].Load("models/cigarette.obj");
-    
-    glm::vec3 wine_color;
+    models[3].Load("models/stand.obj");
+    models[4].Load("models/floor.obj");
 
     // Floor     
-    entities.push_back(Entity(&models[0], 
+    entities.push_back(Entity(&models[4], 
         glm::vec3(0.0f, -3.0f, 0.0f),   //position
         glm::vec3(0.0f),                //rotation
         glm::vec3(30.0f, 0.1f, 30.0f),  //scale
@@ -52,30 +52,26 @@ Scene::Scene(GLuint program) : program{program} {
     // Bottles on stands
     for (int j = 0; j <= 4; j++) {
         for (int i = 0; i <= 9; i++) {
-            
-            if(i%2==1){
-                wine_color = glm::vec3(0.0f, 0.5f, 0.5f);
-            }
-            else{
-                wine_color = glm::vec3(0.8f, 0.5f, 0.5f);
-            }
-
-            entities.push_back(Entity(&models[0], 
-                glm::vec3(-20.0f + (i * 5), -1.5f, -20.0f + (j * 10)), 
-                glm::vec3(0.0f), 
-                glm::vec3(0.5f, 1.25f, 0.5f), 
-                glm::vec3(0.8f, 0.7f, 0.4f), 
-                false,
-                "stand"));
+            entities.push_back(Entity(
+                    &models[3], 
+                    glm::vec3(-20.0f + (i * 5), -2.2f, -20.0f + (j * 10)), 
+                    glm::vec3(0.0f), 
+                    glm::vec3(0.5f, 0.9f, 0.5f), 
+                    glm::vec3(0.8f, 0.7f, 0.4f), 
+                    false,
+                    "stand"
+                )
+            );
             
             
             Entity wine(&models[1], 
                 glm::vec3(-20.0f + (i * 5), -0.25f, -20.0f + (j * 10)), 
                 glm::vec3(-90.0f, 0.0f, 0.0f), 
                 glm::vec3(0.06f, 0.06f, 0.06f), 
-                wine_color, 
+                glm::vec3(0.0f, 0.0f, 0.0f), 
                 true, 
-                "wine_bottle");
+                "wine_bottle"
+            );
 
             wine.SetHitboxLimits(glm::vec3(-0.5f, -0.5f, -0.5f), glm::vec3(0.5f, 1.0f, 0.5f));
             

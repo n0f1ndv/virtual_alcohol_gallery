@@ -12,5 +12,5 @@ newmtl Material__0
 	Kd 1.0000 1.0000 1.0000
 	Ks 0.4500 0.4500 0.4500
 	Ke 0.0000 0.0000 0.0000
-	map_Ka tester.png
-	map_Kd tester.png
+	map_Ka wine.png
+	map_Kd wine.png

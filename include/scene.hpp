@@ -55,7 +55,7 @@ public:
 
     // TODO: Fix manageing models and lights BECUASE THIS SUCKS
     //przeniosłem do public bo potrzebowałem do animacji
-    Model models[7];
+    Model models[5];
 
 private:
     GLuint program;
