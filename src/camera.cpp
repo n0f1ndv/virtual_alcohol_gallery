@@ -1,7 +1,5 @@
 #include "camera.hpp"
 
-#include "collision.hpp"
-
 #include <glm/gtc/type_ptr.hpp>
 
 #include <iostream>
@@ -31,8 +29,8 @@ void Camera::Update(float aspectRatio, float frameTime) {
 
     position += velocity * frameTime;
     glfwSetTime(0);
-
-    P = glm::perspective(glm::radians(50.0f), aspectRatio, 1.0f, 50.0f);
+    
+    P = glm::perspective(glm::radians(50.0f), aspectRatio, 0.2f, 50.0f);
     V = glm::lookAt(position, position + front, glm::vec3(0.0f, 1.0f, 0.0f));
 
     glUniform3fv(glGetUniformLocation(program, "uViewPos"), 1, glm::value_ptr(position));
@@ -56,8 +54,6 @@ void Camera::cursorPositionCallback(GLFWwindow* window, double xpos, double ypos
 }
 
 void Camera::handleKey(int key, int scancode, int action, int mods) {
-    // std::cout << position.x << ", " << position.y << ", " << position.z << ", " << "\n";
-
     if (glfwGetKey(window, GLFW_KEY_ENTER) == GLFW_PRESS) {
         glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
     }

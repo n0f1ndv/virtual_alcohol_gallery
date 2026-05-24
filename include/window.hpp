@@ -3,6 +3,7 @@
 #include "scene.hpp"
 #include "camera.hpp"
 #include "shader.hpp"
+#include "interaction.hpp"
 #include "postProcessing.hpp"
 
 #include <GL/glew.h>
@@ -26,10 +27,10 @@ private:
     float windowWidth;
     float aspectRatio;
 
-    float delta;
-    float totalTime;
-    float frameTime;
-    float lastTime;
+    double delta;
+    double totalTime;
+    double frameTime;
+    double lastTime;
 
     GLFWwindow* window;
 
@@ -38,6 +39,7 @@ private:
     PostProcessing* postProcessing;
     Camera* camera;
     Scene* scene;
+    InteractionSystem* interaction;
 
     void Clock();
 

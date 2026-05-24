@@ -11,7 +11,6 @@ public:
     glm::vec3 position;
     glm::vec3 front = glm::vec3(0.0f, 0.0f, 10.0f); 
 
-    //zmienne do ruchu
     float speed_y = 0.0f;
     float speed_z = 0.0f;
     bool fly = true;
@@ -24,6 +23,10 @@ public:
     static void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
     static void cursorPositionCallback(GLFWwindow* window, double xpos, double ypos);
 
+    const glm::mat4& GetV() const { 
+        return V; 
+    }
+    
 private:
     void handleKey(int key, int scancode, int action, int mods);
     void handleMouse(double xpos, double ypos);

@@ -259,3 +259,13 @@ void Model::Draw(GLuint program, glm::vec3 position, glm::vec3 rotation, glm::ve
     for (auto &m : meshes) 
         m.Draw(program);
 }
+
+void Model::DrawMatrix(GLuint program, glm::mat4 modelMatrix, glm::vec3 color) {
+
+    glUniformMatrix4fv(glGetUniformLocation(program, "M"), 1, GL_FALSE, glm::value_ptr(modelMatrix));
+    glUniform3fv(glGetUniformLocation(program, "uColor"), 1, glm::value_ptr(color));
+    
+    for (auto& m : meshes) {
+        m.Draw(program);
+    }
+}

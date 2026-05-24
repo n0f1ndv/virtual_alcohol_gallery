@@ -1,6 +1,5 @@
 #include "window.hpp"
 #include "model.hpp"
-#include "collision.hpp"
 
 Window::Window(float windowWidth, float windowHeight, std::string windowTitle)
     : windowHeight{windowHeight}
@@ -24,10 +23,13 @@ Window::Window(float windowWidth, float windowHeight, std::string windowTitle)
     }
 
     shader = new Shader("shaders/fragmentModel.glsl", "shaders/vertexModel.glsl");
+    shader->Use();
+    
     ppShader = new Shader("shaders/fragmentPP.glsl", "shaders/vertexPP.glsl");
     postProcessing = new PostProcessing(windowWidth, windowHeight);
     camera = new Camera(window, shader->program, glm::vec3(0.0f, 0.0f, -10.0f));
     scene = new Scene(shader->program);
+    interaction = new InteractionSystem(ppShader->program, shader->program);
 
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
     glfwSetCursorPos(window, windowWidth / 2, windowHeight / 2);
@@ -47,11 +49,19 @@ void Window::Loop() {
         postProcessing->Bind();
 
         shader->Use();
-    
-        camera->Update(aspectRatio, frameTime);
+
+        interaction->Update(window, camera, scene, frameTime);
+
+        if (interaction->IsMovementBlocked()) {
+            camera->Update(aspectRatio, 0.0f); 
+        } else {
+            camera->Update(aspectRatio, frameTime); 
+        }
 
         scene->DrawModels();
-        scene->DrawLights();
+        interaction->DrawHand(scene, camera);
+
+        scene->ApplyLights();
 
         postProcessing->BindDefault();
 
