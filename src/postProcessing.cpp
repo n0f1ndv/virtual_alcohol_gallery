@@ -73,7 +73,7 @@ void PostProcessing::Bind() {
     glBindFramebuffer(GL_FRAMEBUFFER, FBO);
     glEnable(GL_DEPTH_TEST);
 
-    glClearColor(0.016f, 0.647f, 0.898f, 1.0f);
+    glClearColor(0.82f, 0.125f, 0.322f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 

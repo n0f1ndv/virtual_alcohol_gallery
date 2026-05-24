@@ -1,7 +1,5 @@
 #include "camera.hpp"
 
-#include "collision.hpp"
-
 #include <glm/gtc/type_ptr.hpp>
 
 #include <iostream>

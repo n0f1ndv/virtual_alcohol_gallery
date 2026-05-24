@@ -1,7 +1,5 @@
 #pragma once
 
-#include "collision.hpp"
-
 #include <GL/glew.h>
 
 #include <glm/glm.hpp>

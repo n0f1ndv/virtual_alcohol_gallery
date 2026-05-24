@@ -1,7 +1,5 @@
 #include "window.hpp"
 #include "model.hpp"
-#include "collision.hpp"
-
 
 Window::Window(float windowWidth, float windowHeight, std::string windowTitle)
     : windowHeight{windowHeight}
@@ -25,6 +23,8 @@ Window::Window(float windowWidth, float windowHeight, std::string windowTitle)
     }
 
     shader = new Shader("shaders/fragmentModel.glsl", "shaders/vertexModel.glsl");
+    shader->Use();
+    
     ppShader = new Shader("shaders/fragmentPP.glsl", "shaders/vertexPP.glsl");
     postProcessing = new PostProcessing(windowWidth, windowHeight);
     camera = new Camera(window, shader->program, glm::vec3(0.0f, 0.0f, -10.0f));
@@ -61,7 +61,7 @@ void Window::Loop() {
         scene->DrawModels();
         interaction->DrawHand(scene, camera);
 
-        scene->DrawLights();
+        scene->ApplyLights();
 
         postProcessing->BindDefault();
 

@@ -7,10 +7,25 @@
 #include <vector>
 #include <string>
 
+const int LIGHTS_NUMBER = 8;
+
+class Light {
+public:
+    Light(glm::vec3 position, glm::vec3 color, float intensity, float constant, float linear, float quadratic);
+
+    glm::vec3 position;
+    glm::vec3 color;
+    float intensity;
+    
+    float constant;
+    float linear;
+    float quadratic;
+};
+
 class BoundingBox {
-    public:
-        glm::vec3 min;
-        glm::vec3 max;
+public:
+    glm::vec3 min;
+    glm::vec3 max;
 };
 
 class Entity {
@@ -19,7 +34,6 @@ private:
     BoundingBox hitbox;
 
 public:
-
     glm::vec3 position;
     glm::vec3 rotation;
     glm::vec3 scale;
@@ -47,9 +61,8 @@ public:
     ~Scene();
 
     void DrawModels();
-    void DrawLights();
+    void ApplyLights();
 
-    //wektor przechowujacy obiekty
     std::vector<Entity> entities;
 
     Model models[5];
@@ -57,6 +70,5 @@ public:
 private:
     GLuint program;
 
-    glm::vec3 modelColor = glm::vec3(0.0f, 0.0f, 0.0f);
-    glm::vec3 lightPosition = glm::vec3(2.0f, 30.0f, -4.0f);
+    std::vector<Light> lights;
 };
