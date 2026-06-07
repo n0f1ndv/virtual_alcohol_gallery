@@ -49,7 +49,7 @@ void Window::Loop() {
         postProcessing->Bind();
 
         shader->Use();
-
+        
         interaction->Update(window, camera, scene, frameTime);
 
         if (interaction->IsMovementBlocked()) {

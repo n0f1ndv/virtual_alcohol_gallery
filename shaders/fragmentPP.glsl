@@ -13,7 +13,7 @@ vec3 blink(float strength, vec3 color) {
 }
 
 vec3 fluctuateColors(vec3 color) {
-    return vec3(0.0, sin(color.b * time), cos(color.r * time));
+    return vec3(0.0, sin(color.g * time), 0.0);
 }
 
 float fractal(vec2 uv, vec3 sceneColor) {
