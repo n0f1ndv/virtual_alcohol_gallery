@@ -68,7 +68,6 @@ void PostProcessing::Setup(float updatedWidth, float updatedHeight) {
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
-// TODO: Come up with better names for these methods
 void PostProcessing::Bind() {
     glBindFramebuffer(GL_FRAMEBUFFER, FBO);
     glEnable(GL_DEPTH_TEST);

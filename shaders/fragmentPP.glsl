@@ -28,7 +28,7 @@ float fractal(vec2 uv, vec3 sceneColor) {
     for (int i = 0; i < maxIterations; i++) {
         z = vec2(z.x * z.x - z.y * z.y, 2.0 * z.x * z.y) + juliaConstant;
 
-        if (length(z) > 6.0) break;
+        if (length(z) > 5.0) break;
         iterations++;
     }
     
@@ -40,7 +40,7 @@ void main()
     vec3 color = texture(screenTexture, TexCoords).rgb;
 
     if (drunk >= 4) {
-       color = texture(screenTexture, TexCoords + fractal(TexCoords, color)).rgb; 
+       color = texture(screenTexture, TexCoords * fractal(TexCoords, color)).rgb; 
     }
     if (drunk >= 1) {
         vec2 centre = vec2((sin(time) + 1) / 2);
